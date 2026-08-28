@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bchat_primary">#00D2FF</color>
+    <color name="bchat_primary_variant">#0099FF</color>
+    <color name="bchat_secondary">#7928CA</color>
+    <color name="bchat_background">#0F172A</color>
+    <color name="bchat_surface">#1E293B</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>
