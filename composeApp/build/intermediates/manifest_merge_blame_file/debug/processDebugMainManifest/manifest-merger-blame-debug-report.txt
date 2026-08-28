@@ -1,0 +1,407 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.praveen.bchat"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Network & Local Sockets -->
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:6:5-67
+12-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:6:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:7:5-79
+13-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:7:22-76
+14    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+14-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:8:5-79
+14-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:8:22-76
+15    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+15-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:9:5-76
+15-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:9:22-73
+16    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+16-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:10:5-76
+16-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:10:22-73
+17    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+17-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:11:5-86
+17-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:11:22-83
+18
+19    <!-- Bluetooth Classic & BLE (Android 11 & lower) -->
+20    <uses-permission
+20-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:14:5-95
+21        android:name="android.permission.BLUETOOTH"
+21-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:14:22-65
+22        android:maxSdkVersion="30" />
+22-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:14:66-92
+23    <uses-permission
+23-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:15:5-101
+24        android:name="android.permission.BLUETOOTH_ADMIN"
+24-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:15:22-71
+25        android:maxSdkVersion="30" />
+25-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:15:72-98
+26
+27    <!-- Bluetooth (Android 12+) -->
+28    <uses-permission
+28-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:18:5-20:31
+29        android:name="android.permission.BLUETOOTH_SCAN"
+29-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:18:22-70
+30        android:usesPermissionFlags="neverForLocation" />
+30-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:19:9-55
+31    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+31-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:21:5-98
+31-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:21:22-75
+32    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+32-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:22:5-96
+32-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:22:22-73
+33
+34    <!-- Wi-Fi & Nearby (Android 13+) -->
+35    <uses-permission
+35-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:25:5-27:38
+36        android:name="android.permission.NEARBY_WIFI_DEVICES"
+36-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:25:22-75
+37        android:usesPermissionFlags="neverForLocation" />
+37-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:26:9-55
+38
+39    <!-- Location (Required for BLE / Wi-Fi Direct peer discovery on older Android versions) -->
+40    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+40-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:30:5-79
+40-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:30:22-76
+41    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+41-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:31:5-81
+41-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:31:22-78
+42
+43    <!-- Camera for QR Code Pairing -->
+44    <uses-permission android:name="android.permission.CAMERA" />
+44-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:34:5-65
+44-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:34:22-62
+45
+46    <uses-feature
+46-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:35:5-85
+47        android:name="android.hardware.camera"
+47-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:35:19-57
+48        android:required="false" />
+48-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:35:58-82
+49    <uses-feature
+49-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:36:5-88
+50        android:name="android.hardware.bluetooth"
+50-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:36:19-60
+51        android:required="false" />
+51-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:36:61-85
+52    <uses-feature
+52-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:37:5-83
+53        android:name="android.hardware.wifi"
+53-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:37:19-55
+54        android:required="false" />
+54-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:37:56-80
+55
+56    <!-- Storage & Media -->
+57    <uses-permission
+57-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:40:5-107
+58        android:name="android.permission.READ_EXTERNAL_STORAGE"
+58-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:40:22-77
+59        android:maxSdkVersion="32" />
+59-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:40:78-104
+60    <uses-permission
+60-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:41:5-108
+61        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+61-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:41:22-78
+62        android:maxSdkVersion="29" />
+62-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:41:79-105
+63    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+63-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:42:5-103
+63-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:42:22-73
+64    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+64-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:43:5-102
+64-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:43:22-72
+65    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+65-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:44:5-102
+65-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:44:22-72
+66
+67    <!-- Foreground Services for Background File Transfers -->
+68    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+68-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:47:5-104
+68-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:47:22-74
+69    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+69-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:48:5-77
+69-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:48:22-74
+70    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+70-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:49:5-122
+70-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:49:22-84
+71    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+71-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:50:5-129
+71-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:50:22-91
+72    <uses-permission android:name="android.permission.WAKE_LOCK" />
+72-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:51:5-68
+72-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:51:22-65
+73    <uses-permission android:name="android.permission.VIBRATE" />
+73-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:52:5-66
+73-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:52:22-63
+74
+75    <permission
+75-->[androidx.core:core:1.13.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\288f88317841e4529176c855ad294639\workspace\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+76        android:name="com.praveen.bchat.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+76-->[androidx.core:core:1.13.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\288f88317841e4529176c855ad294639\workspace\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+77        android:protectionLevel="signature" />
+77-->[androidx.core:core:1.13.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\288f88317841e4529176c855ad294639\workspace\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+78
+79    <uses-permission android:name="com.praveen.bchat.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+79-->[androidx.core:core:1.13.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\288f88317841e4529176c855ad294639\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+79-->[androidx.core:core:1.13.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\288f88317841e4529176c855ad294639\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+80
+81    <application
+81-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:54:5-88:19
+82        android:name="com.praveen.bchat.BChatApplication"
+82-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:55:9-41
+83        android:allowBackup="true"
+83-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:56:9-35
+84        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+84-->[androidx.core:core:1.13.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\288f88317841e4529176c855ad294639\workspace\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+85        android:dataExtractionRules="@xml/data_extraction_rules"
+85-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:57:9-65
+86        android:debuggable="true"
+87        android:extractNativeLibs="false"
+88        android:fullBackupContent="@xml/backup_rules"
+88-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:58:9-54
+89        android:icon="@mipmap/ic_launcher"
+89-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:59:9-43
+90        android:label="@string/app_name"
+90-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:60:9-41
+91        android:roundIcon="@mipmap/ic_launcher_round"
+91-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:61:9-54
+92        android:supportsRtl="true"
+92-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:62:9-35
+93        android:theme="@style/Theme.BChat" >
+93-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:63:9-43
+94        <activity
+94-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:66:9-75:20
+95            android:name="com.praveen.bchat.MainActivity"
+95-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:67:13-41
+96            android:exported="true"
+96-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:68:13-36
+97            android:theme="@style/Theme.BChat"
+97-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:70:13-47
+98            android:windowSoftInputMode="adjustResize" >
+98-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:69:13-55
+99            <intent-filter>
+99-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:71:13-74:29
+100                <action android:name="android.intent.action.MAIN" />
+100-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:72:17-69
+100-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:72:25-66
+101
+102                <category android:name="android.intent.category.LAUNCHER" />
+102-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:73:17-77
+102-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:73:27-74
+103            </intent-filter>
+104        </activity>
+105
+106        <!-- Secure FileProvider for opening / sharing received files -->
+107        <provider
+108            android:name="androidx.core.content.FileProvider"
+108-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:79:13-62
+109            android:authorities="com.praveen.bchat.fileprovider"
+109-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:80:13-64
+110            android:exported="false"
+110-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:81:13-37
+111            android:grantUriPermissions="true" >
+111-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:82:13-47
+112            <meta-data
+112-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:83:13-85:54
+113                android:name="android.support.FILE_PROVIDER_PATHS"
+113-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:84:17-67
+114                android:resource="@xml/file_paths" />
+114-->C:\Users\IN11867\Documents\Praveen\Projects\BChat\composeApp\src\androidMain\AndroidManifest.xml:85:17-51
+115        </provider>
+116
+117        <service
+117-->[com.google.android.gms:play-services-nearby:19.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\bae4bfc3b5f0b631951272ab9400b2fc\workspace\transformed\play-services-nearby-19.3.0\AndroidManifest.xml:9:9-214
+118            android:name="com.google.android.gms.nearby.exposurenotification.WakeUpService"
+118-->[com.google.android.gms:play-services-nearby:19.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\bae4bfc3b5f0b631951272ab9400b2fc\workspace\transformed\play-services-nearby-19.3.0\AndroidManifest.xml:9:18-97
+119            android:exported="true"
+119-->[com.google.android.gms:play-services-nearby:19.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\bae4bfc3b5f0b631951272ab9400b2fc\workspace\transformed\play-services-nearby-19.3.0\AndroidManifest.xml:9:98-121
+120            android:permission="com.google.android.gms.nearby.exposurenotification.EXPOSURE_CALLBACK" />
+120-->[com.google.android.gms:play-services-nearby:19.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\bae4bfc3b5f0b631951272ab9400b2fc\workspace\transformed\play-services-nearby-19.3.0\AndroidManifest.xml:9:122-211
+121        <service
+121-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\53e56c840c466c03512a4dd865cb0e9f\workspace\transformed\play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:9:9-15:19
+122            android:name="com.google.mlkit.common.internal.MlKitComponentDiscoveryService"
+122-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\53e56c840c466c03512a4dd865cb0e9f\workspace\transformed\play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:10:13-91
+123            android:directBootAware="true"
+123-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:17:13-43
+124            android:exported="false" >
+124-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\53e56c840c466c03512a4dd865cb0e9f\workspace\transformed\play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:11:13-37
+125            <meta-data
+125-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\53e56c840c466c03512a4dd865cb0e9f\workspace\transformed\play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:12:13-14:85
+126                android:name="com.google.firebase.components:com.google.mlkit.vision.barcode.internal.BarcodeRegistrar"
+126-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\53e56c840c466c03512a4dd865cb0e9f\workspace\transformed\play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:13:17-120
+127                android:value="com.google.firebase.components.ComponentRegistrar" />
+127-->[com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\53e56c840c466c03512a4dd865cb0e9f\workspace\transformed\play-services-mlkit-barcode-scanning-18.3.0\AndroidManifest.xml:14:17-82
+128            <meta-data
+128-->[com.google.mlkit:vision-common:17.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9688c3e3be5d10adbfa4ec25d88f62f\workspace\transformed\vision-common-17.3.0\AndroidManifest.xml:12:13-14:85
+129                android:name="com.google.firebase.components:com.google.mlkit.vision.common.internal.VisionCommonRegistrar"
+129-->[com.google.mlkit:vision-common:17.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9688c3e3be5d10adbfa4ec25d88f62f\workspace\transformed\vision-common-17.3.0\AndroidManifest.xml:13:17-124
+130                android:value="com.google.firebase.components.ComponentRegistrar" />
+130-->[com.google.mlkit:vision-common:17.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9688c3e3be5d10adbfa4ec25d88f62f\workspace\transformed\vision-common-17.3.0\AndroidManifest.xml:14:17-82
+131            <meta-data
+131-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:20:13-22:85
+132                android:name="com.google.firebase.components:com.google.mlkit.common.internal.CommonComponentRegistrar"
+132-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:21:17-120
+133                android:value="com.google.firebase.components.ComponentRegistrar" />
+133-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:22:17-82
+134        </service>
+135
+136        <provider
+136-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:9:9-13:38
+137            android:name="com.google.mlkit.common.internal.MlKitInitProvider"
+137-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:10:13-78
+138            android:authorities="com.praveen.bchat.mlkitinitprovider"
+138-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:11:13-69
+139            android:exported="false"
+139-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:12:13-37
+140            android:initOrder="99" />
+140-->[com.google.mlkit:common:18.9.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\043991fab505d0c96b58c94785ce9e56\workspace\transformed\common-18.9.0\AndroidManifest.xml:13:13-35
+141
+142        <activity
+142-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\94b9092d309e881087be1a3d3b2a7195\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:9-173
+143            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+143-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\94b9092d309e881087be1a3d3b2a7195\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:19-85
+144            android:exported="false"
+144-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\94b9092d309e881087be1a3d3b2a7195\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:146-170
+145            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+145-->[com.google.android.gms:play-services-base:18.5.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\94b9092d309e881087be1a3d3b2a7195\workspace\transformed\play-services-base-18.5.0\AndroidManifest.xml:5:86-145
+146
+147        <provider
+147-->[org.jetbrains.compose.components:components-resources-android:1.7.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\5c27206432442798b34a1169694e1d91\workspace\transformed\library-release\AndroidManifest.xml:8:9-13:20
+148            android:name="org.jetbrains.compose.resources.AndroidContextProvider"
+148-->[org.jetbrains.compose.components:components-resources-android:1.7.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\5c27206432442798b34a1169694e1d91\workspace\transformed\library-release\AndroidManifest.xml:9:13-82
+149            android:authorities="com.praveen.bchat.resources.AndroidContextProvider"
+149-->[org.jetbrains.compose.components:components-resources-android:1.7.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\5c27206432442798b34a1169694e1d91\workspace\transformed\library-release\AndroidManifest.xml:10:13-84
+150            android:enabled="true"
+150-->[org.jetbrains.compose.components:components-resources-android:1.7.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\5c27206432442798b34a1169694e1d91\workspace\transformed\library-release\AndroidManifest.xml:11:13-35
+151            android:exported="false" >
+151-->[org.jetbrains.compose.components:components-resources-android:1.7.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\5c27206432442798b34a1169694e1d91\workspace\transformed\library-release\AndroidManifest.xml:12:13-37
+152        </provider>
+153        <!--
+154        Service for holding metadata. Cannot be instantiated.
+155        Metadata will be merged from other manifests.
+156        -->
+157        <service
+157-->[androidx.camera:camera-core:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\49a0815f82d88cf8d23ad8bbc71f763e\workspace\transformed\camera-core-1.3.4\AndroidManifest.xml:29:9-33:78
+158            android:name="androidx.camera.core.impl.MetadataHolderService"
+158-->[androidx.camera:camera-core:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\49a0815f82d88cf8d23ad8bbc71f763e\workspace\transformed\camera-core-1.3.4\AndroidManifest.xml:30:13-75
+159            android:enabled="false"
+159-->[androidx.camera:camera-core:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\49a0815f82d88cf8d23ad8bbc71f763e\workspace\transformed\camera-core-1.3.4\AndroidManifest.xml:31:13-36
+160            android:exported="false" >
+160-->[androidx.camera:camera-core:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\49a0815f82d88cf8d23ad8bbc71f763e\workspace\transformed\camera-core-1.3.4\AndroidManifest.xml:32:13-37
+161            <meta-data
+161-->[androidx.camera:camera-camera2:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\cbd66a7674b597b7a01beda101edaafe\workspace\transformed\camera-camera2-1.3.4\AndroidManifest.xml:30:13-32:89
+162                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
+162-->[androidx.camera:camera-camera2:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\cbd66a7674b597b7a01beda101edaafe\workspace\transformed\camera-camera2-1.3.4\AndroidManifest.xml:31:17-103
+163                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
+163-->[androidx.camera:camera-camera2:1.3.4] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\cbd66a7674b597b7a01beda101edaafe\workspace\transformed\camera-camera2-1.3.4\AndroidManifest.xml:32:17-86
+164        </service>
+165
+166        <provider
+166-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+167            android:name="androidx.startup.InitializationProvider"
+167-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+168            android:authorities="com.praveen.bchat.androidx-startup"
+168-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+169            android:exported="false" >
+169-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+170            <meta-data
+170-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+171                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+171-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+172                android:value="androidx.startup" />
+172-->[androidx.emoji2:emoji2:1.3.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\3b6ca89567c6d2baa08a06f819e24588\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+173            <meta-data
+173-->[androidx.lifecycle:lifecycle-process:2.8.5] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\65fcd433301f20e47ad07a467874ba5f\workspace\transformed\lifecycle-process-2.8.5\AndroidManifest.xml:29:13-31:52
+174                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+174-->[androidx.lifecycle:lifecycle-process:2.8.5] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\65fcd433301f20e47ad07a467874ba5f\workspace\transformed\lifecycle-process-2.8.5\AndroidManifest.xml:30:17-78
+175                android:value="androidx.startup" />
+175-->[androidx.lifecycle:lifecycle-process:2.8.5] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\65fcd433301f20e47ad07a467874ba5f\workspace\transformed\lifecycle-process-2.8.5\AndroidManifest.xml:31:17-49
+176            <meta-data
+176-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+177                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+177-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+178                android:value="androidx.startup" />
+178-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+179        </provider>
+180
+181        <meta-data
+181-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\e10c8c6dda81bb644a6dfd629c8e72a3\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:9-122
+182            android:name="com.google.android.gms.version"
+182-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\e10c8c6dda81bb644a6dfd629c8e72a3\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:20-65
+183            android:value="@integer/google_play_services_version" />
+183-->[com.google.android.gms:play-services-basement:18.4.0] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\e10c8c6dda81bb644a6dfd629c8e72a3\workspace\transformed\play-services-basement-18.4.0\AndroidManifest.xml:6:66-119
+184
+185        <service
+185-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\9263bd28b5ff93cb3b1fb8b67031112f\workspace\transformed\transport-backend-cct-2.3.3\AndroidManifest.xml:29:9-35:19
+186            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+186-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\9263bd28b5ff93cb3b1fb8b67031112f\workspace\transformed\transport-backend-cct-2.3.3\AndroidManifest.xml:30:13-103
+187            android:exported="false" >
+187-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\9263bd28b5ff93cb3b1fb8b67031112f\workspace\transformed\transport-backend-cct-2.3.3\AndroidManifest.xml:31:13-37
+188            <meta-data
+188-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\9263bd28b5ff93cb3b1fb8b67031112f\workspace\transformed\transport-backend-cct-2.3.3\AndroidManifest.xml:32:13-34:39
+189                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+189-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\9263bd28b5ff93cb3b1fb8b67031112f\workspace\transformed\transport-backend-cct-2.3.3\AndroidManifest.xml:33:17-94
+190                android:value="cct" />
+190-->[com.google.android.datatransport:transport-backend-cct:2.3.3] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\9263bd28b5ff93cb3b1fb8b67031112f\workspace\transformed\transport-backend-cct-2.3.3\AndroidManifest.xml:34:17-36
+191        </service>
+192        <service
+192-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:26:9-30:19
+193            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+193-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:27:13-117
+194            android:exported="false"
+194-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:28:13-37
+195            android:permission="android.permission.BIND_JOB_SERVICE" >
+195-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:29:13-69
+196        </service>
+197
+198        <receiver
+198-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:32:9-34:40
+199            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+199-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:33:13-132
+200            android:exported="false" />
+200-->[com.google.android.datatransport:transport-runtime:2.2.6] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\2347f5dfaf59e9971c5ea19883292991\workspace\transformed\transport-runtime-2.2.6\AndroidManifest.xml:34:13-37
+201        <receiver
+201-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+202            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+202-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+203            android:directBootAware="false"
+203-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+204            android:enabled="true"
+204-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+205            android:exported="true"
+205-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+206            android:permission="android.permission.DUMP" >
+206-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+207            <intent-filter>
+207-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+208                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+208-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+208-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+209            </intent-filter>
+210            <intent-filter>
+210-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+211                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+211-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+211-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+212            </intent-filter>
+213            <intent-filter>
+213-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+214                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+214-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+214-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+215            </intent-filter>
+216            <intent-filter>
+216-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+217                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+217-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+217-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\IN11867\.gradle\caches\9.1.0\transforms\c9ae9f359cda530e2813de218af17c0f\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+218            </intent-filter>
+219        </receiver>
+220    </application>
+221
+222</manifest>

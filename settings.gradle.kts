@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "BChat"
-include(":app")
+include(":composeApp")

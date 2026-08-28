@@ -1,0 +1,24 @@
+R_DEF: Internal format may change without notice
+local
+color bchat_background
+color bchat_primary
+color bchat_primary_variant
+color bchat_secondary
+color bchat_surface
+color black
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string desc_offline_p2p
+string title_chats
+string title_discover
+string title_hotspot
+string title_settings
+string title_transfers
+style Theme.BChat
+xml backup_rules
+xml data_extraction_rules
+xml file_paths

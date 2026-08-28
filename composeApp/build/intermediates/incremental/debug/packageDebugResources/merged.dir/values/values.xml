@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bchat_background">#0F172A</color>
+    <color name="bchat_primary">#00D2FF</color>
+    <color name="bchat_primary_variant">#0099FF</color>
+    <color name="bchat_secondary">#7928CA</color>
+    <color name="bchat_surface">#1E293B</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">BChat</string>
+    <string name="desc_offline_p2p">Offline P2P Mesh Chat &amp; File Share</string>
+    <string name="title_chats">Chats</string>
+    <string name="title_discover">Discover</string>
+    <string name="title_hotspot">Hotspot</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_transfers">Transfers</string>
+    <style name="Theme.BChat" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/bchat_background</item>
+        <item name="android:navigationBarColor">@color/bchat_background</item>
+    </style>
+</resources>
