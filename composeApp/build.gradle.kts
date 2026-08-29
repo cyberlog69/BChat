@@ -14,22 +14,15 @@ kotlin {
         }
     }
     
-    val isMac = System.getProperty("os.name").lowercase().contains("mac")
-    if (isMac) {
-        listOf(
-            iosX64(),
-            iosArm64(),
-            iosSimulatorArm64()
-        ).forEach { iosTarget ->
-            iosTarget.binaries.framework {
-                baseName = "ComposeApp"
-                isStatic = true
-            }
-        }
-    } else {
-        iosX64()
-        iosArm64()
+    listOf(
+        iosX64(),
+        iosArm64(),
         iosSimulatorArm64()
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "ComposeApp"
+            isStatic = true
+        }
     }
     
     sourceSets {
