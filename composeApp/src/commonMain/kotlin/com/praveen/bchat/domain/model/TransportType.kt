@@ -9,6 +9,7 @@ enum class TransportType(val displayName: String, val speedRating: String) {
     BLUETOOTH_CLASSIC("Bluetooth Classic", "Standard (~2 MB/s)")
 }
 
+@Serializable
 enum class ConnectionStatus {
     DISCONNECTED,
     ADVERTISING,
