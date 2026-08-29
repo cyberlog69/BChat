@@ -106,6 +106,18 @@ class IosMultipeerTransport : NSObject(), MCSessionDelegateProtocol, MCNearbySer
         session?.sendData(data, toPeers = listOf(targetPeerID), withMode = MCSessionSendDataMode.MCSessionSendDataReliable, error = null)
     }
 
+    fun sendChunk(peerId: String, chunk: FileChunkPacket): Boolean {
+        val targetPeerID = peerMap[peerId] ?: return false
+        val packet = ProtocolPacket(
+            type = PacketType.FILE_CHUNK,
+            senderId = myPeerID?.displayName ?: "iOS-Me",
+            senderName = myPeerID?.displayName ?: "iOS-Me",
+            chunkPacket = chunk
+        )
+        val data = packet.toByteArray().toNSData()
+        return session?.sendData(data, toPeers = listOf(targetPeerID), withMode = MCSessionSendDataMode.MCSessionSendDataReliable, error = null) ?: false
+    }
+
     fun broadcastPacket(packet: ProtocolPacket) {
         val currentSession = session ?: return
         val connected = currentSession.connectedPeers

@@ -1,10 +1,7 @@
 package com.praveen.bchat.data.transport
 
 import android.net.Uri
-import com.praveen.bchat.domain.model.FileTransfer
-import com.praveen.bchat.domain.model.PeerDevice
-import com.praveen.bchat.domain.model.ProtocolPacket
-import com.praveen.bchat.domain.model.TransportType
+import com.praveen.bchat.domain.model.*
 import kotlinx.coroutines.flow.StateFlow
 
 interface P2PTransportListener {
@@ -38,5 +35,17 @@ interface P2PTransport {
     fun sendPacket(peerId: String, packet: ProtocolPacket)
     fun broadcastPacket(packet: ProtocolPacket)
     fun sendFile(peerId: String, fileUri: Uri, messageId: String, onProgress: (FileTransfer) -> Unit)
+    fun sendChunk(peerId: String, chunk: FileChunkPacket): Boolean {
+        sendPacket(
+            peerId,
+            ProtocolPacket(
+                type = PacketType.FILE_CHUNK,
+                senderId = "me",
+                senderName = "BChat",
+                chunkPacket = chunk
+            )
+        )
+        return true
+    }
     fun release()
 }

@@ -3,6 +3,7 @@ package com.praveen.bchat.data.transport
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.praveen.bchat.data.transfer.MultiPathFileManager
 import com.praveen.bchat.data.transport.bluetooth.BluetoothClassicTransport
 import com.praveen.bchat.data.transport.hotspot.HotspotSocketTransport
 import com.praveen.bchat.data.transport.nearby.NearbyConnectionsTransport
@@ -41,6 +42,8 @@ class P2PManager(
     val nearbyTransport = NearbyConnectionsTransport(context, scope)
     val hotspotTransport = HotspotSocketTransport(context, scope)
     val bluetoothTransport = BluetoothClassicTransport(context, scope)
+
+    val multiPathFileManager = MultiPathFileManager(context, scope)
 
     private val allTransports: List<P2PTransport> = listOf(
         nearbyTransport,
@@ -91,78 +94,65 @@ class P2PManager(
         updatePeersFlow()
     }
 
-    fun startAdvertising(customName: String? = null) {
-        val name = customName ?: NetworkUtils.getDeviceName(context)
+    fun startAllAdvertising(localDeviceName: String) {
         val filter = _activeTransportFilter.value
-
-        if (filter == null || filter == TransportType.NEARBY_SHARE) {
-            nearbyTransport.startAdvertising(name)
-        }
-        if (filter == null || filter == TransportType.HOTSPOT_WIFI) {
-            hotspotTransport.startAdvertising(name)
-        }
-        if (filter == null || filter == TransportType.BLUETOOTH_CLASSIC) {
-            bluetoothTransport.startAdvertising(name)
+        if (filter == null) {
+            allTransports.forEach { it.startAdvertising(localDeviceName) }
+        } else {
+            getTransport(filter)?.startAdvertising(localDeviceName)
         }
         _isAdvertising.value = true
+        scope.launch { _statusEvents.emit("Advertising as '$localDeviceName' on active channels") }
     }
 
-    fun stopAdvertising() {
+    fun stopAllAdvertising() {
         allTransports.forEach { it.stopAdvertising() }
         _isAdvertising.value = false
+        scope.launch { _statusEvents.emit("Stopped advertising") }
     }
 
-    fun startDiscovery() {
+    fun startAllDiscovery() {
         val filter = _activeTransportFilter.value
-        if (filter == null || filter == TransportType.NEARBY_SHARE) {
-            nearbyTransport.startDiscovery()
-        }
-        if (filter == null || filter == TransportType.HOTSPOT_WIFI) {
-            hotspotTransport.startDiscovery()
-        }
-        if (filter == null || filter == TransportType.BLUETOOTH_CLASSIC) {
-            bluetoothTransport.startDiscovery()
+        _discoveredPeersMap.clear()
+        updatePeersFlow()
+
+        if (filter == null) {
+            allTransports.forEach { it.startDiscovery() }
+        } else {
+            getTransport(filter)?.startDiscovery()
         }
         _isScanning.value = true
+        scope.launch { _statusEvents.emit("Scanning for nearby peers...") }
     }
 
-    fun stopDiscovery() {
+    fun stopAllDiscovery() {
         allTransports.forEach { it.stopDiscovery() }
         _isScanning.value = false
+        scope.launch { _statusEvents.emit("Scanning stopped") }
     }
 
     fun connectToPeer(peer: PeerDevice) {
-        when (peer.transportType) {
-            TransportType.NEARBY_SHARE -> nearbyTransport.connect(peer)
-            TransportType.HOTSPOT_WIFI -> hotspotTransport.connect(peer)
-            TransportType.BLUETOOTH_CLASSIC -> bluetoothTransport.connect(peer)
+        val transport = getTransport(peer.transportType)
+        if (transport == null) {
+            scope.launch { _statusEvents.emit("Unknown transport: ${peer.transportType}") }
+            return
         }
+        val connectingPeer = peer.copy(connectionStatus = ConnectionStatus.CONNECTING)
+        _discoveredPeersMap[peer.id] = connectingPeer
+        updatePeersFlow()
+
+        transport.connect(peer)
+        scope.launch { _statusEvents.emit("Connecting to ${peer.name} via ${peer.transportType.displayName}...") }
     }
 
-    fun disconnectPeer(peerId: String) {
-        allTransports.forEach { it.disconnect(peerId) }
-        _discoveredPeersMap.remove(peerId)
-        sessionKeys.remove(peerId)
-        peerPublicKeys.remove(peerId)
+    fun disconnectPeer(peer: PeerDevice) {
+        val transport = getTransport(peer.transportType)
+        transport?.disconnect(peer.id)
+        sessionKeys.remove(peer.id)
+        peerPublicKeys.remove(peer.id)
+        _discoveredPeersMap.remove(peer.id)
         updatePeersFlow()
         updateConnectedPeersFlow()
-    }
-
-    fun disconnectAll() {
-        allTransports.forEach { it.disconnectAll() }
-        _discoveredPeersMap.clear()
-        sessionKeys.clear()
-        peerPublicKeys.clear()
-        updatePeersFlow()
-        updateConnectedPeersFlow()
-    }
-
-    fun getPeerSafetyNumber(peerId: String): String? {
-        return _discoveredPeersMap[peerId]?.safetyNumber
-    }
-
-    fun getPeerPublicKey(peerId: String): String? {
-        return peerPublicKeys[peerId]
     }
 
     fun sendTextMessage(
@@ -174,25 +164,37 @@ class P2PManager(
         val messageId = UUID.randomUUID().toString()
         val peer = _discoveredPeersMap[peerId] ?: _connectedPeers.value.find { it.id == peerId }
         val transportType = peer?.transportType ?: TransportType.NEARBY_SHARE
-        val sessionKey = sessionKeys[peerId]
 
-        val packet = if (sessionKey != null) {
-            // E2EE AES-256-GCM Encrypted
-            val encrypted = CryptoEngine.encrypt(content, sessionKey)
-            ProtocolPacket(
-                type = PacketType.TEXT_MESSAGE,
-                senderId = "me",
-                senderName = senderName,
-                messageId = messageId,
-                textContent = "[🔒 E2EE Encrypted]",
-                conversationId = conversationId,
-                isEncrypted = true,
-                cipherText = encrypted.cipherText,
-                iv = encrypted.iv
-            )
+        val sessionKey = sessionKeys[peerId]
+        val packet: ProtocolPacket
+
+        if (sessionKey != null) {
+            // E2EE Encrypt text payload
+            val encryptedPayload = CryptoEngine.encrypt(content, sessionKey)
+            if (encryptedPayload != null) {
+                packet = ProtocolPacket(
+                    type = PacketType.TEXT_MESSAGE,
+                    senderId = "me",
+                    senderName = senderName,
+                    messageId = messageId,
+                    conversationId = conversationId,
+                    isEncrypted = true,
+                    cipherText = encryptedPayload.cipherText,
+                    iv = encryptedPayload.iv
+                )
+            } else {
+                packet = ProtocolPacket(
+                    type = PacketType.TEXT_MESSAGE,
+                    senderId = "me",
+                    senderName = senderName,
+                    messageId = messageId,
+                    textContent = content,
+                    conversationId = conversationId,
+                    isEncrypted = false
+                )
+            }
         } else {
-            // Unencrypted fallback
-            ProtocolPacket(
+            packet = ProtocolPacket(
                 type = PacketType.TEXT_MESSAGE,
                 senderId = "me",
                 senderName = senderName,
@@ -283,6 +285,55 @@ class P2PManager(
             timestamp = System.currentTimeMillis(),
             status = MessageStatus.SENDING,
             transportType = transportType,
+            isEncrypted = true,
+            fileAttachment = meta
+        )
+    }
+
+    /**
+     * Sends a large file using concurrent Multi-Path striping across all connected channels.
+     */
+    fun sendFileMultiPath(
+        peerId: String,
+        fileUri: Uri,
+        conversationId: String,
+        meta: FileAttachmentMeta,
+        onProgress: (FileTransfer) -> Unit
+    ): ChatMessage {
+        val messageId = UUID.randomUUID().toString()
+        val peer = _discoveredPeersMap[peerId] ?: _connectedPeers.value.find { it.id == peerId }
+        val peerName = peer?.name ?: "Peer"
+
+        val availableTransports = allTransports.filter { transport ->
+            transport.connectedPeers.value.any { it.id == peerId } || transport.transportType == peer?.transportType
+        }.ifEmpty {
+            listOfNotNull(peer?.transportType?.let { getTransport(it) } ?: hotspotTransport)
+        }
+
+        multiPathFileManager.sendFileMultiPath(
+            transports = availableTransports,
+            peerId = peerId,
+            peerName = peerName,
+            fileUri = fileUri,
+            messageId = messageId
+        ) { transfer ->
+            scope.launch {
+                _transferUpdates.emit(transfer)
+                onProgress(transfer)
+            }
+        }
+
+        return ChatMessage(
+            id = messageId,
+            conversationId = conversationId,
+            senderId = "me",
+            senderName = "Me",
+            isOutgoing = true,
+            content = "⚡ Multi-Path file: ${meta.fileName}",
+            type = if (meta.mimeType.startsWith("image/")) MessageType.IMAGE else MessageType.FILE,
+            timestamp = System.currentTimeMillis(),
+            status = MessageStatus.SENDING,
+            transportType = peer?.transportType ?: TransportType.HOTSPOT_WIFI,
             isEncrypted = true,
             fileAttachment = meta
         )
@@ -439,6 +490,33 @@ class P2PManager(
                         fileAttachment = packet.fileAttachment
                     )
                     scope.launch { _incomingMessages.emit(msg) }
+                }
+            }
+
+            PacketType.MULTIPATH_HANDSHAKE -> {
+                val handshake = packet.multipathHandshake
+                if (handshake != null) {
+                    multiPathFileManager.startIncomingSession(
+                        handshake = handshake,
+                        peerId = peerId,
+                        peerName = senderName,
+                        onProgress = { transfer ->
+                            scope.launch { _transferUpdates.emit(transfer) }
+                        },
+                        onComplete = { transfer ->
+                            scope.launch {
+                                _receivedFiles.emit(transfer)
+                                _statusEvents.emit("⚡ Received multi-path file: ${transfer.fileName}")
+                            }
+                        }
+                    )
+                }
+            }
+
+            PacketType.FILE_CHUNK -> {
+                val chunk = packet.chunkPacket
+                if (chunk != null) {
+                    multiPathFileManager.handleIncomingChunk(chunk, transportType)
                 }
             }
 
