@@ -1,0 +1,125 @@
+name: Build & Package (Android & iOS)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-android:
+    name: 🤖 Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: 🔑 Grant Execute Permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: 🔨 Build Android Debug APK
+        run: ./gradlew :composeApp:assembleDebug --stacktrace
+
+      - name: 📦 Upload Android APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BChat-Android-Debug-APK
+          path: composeApp/build/outputs/apk/debug/*.apk
+          retention-days: 14
+
+  build-ios:
+    name: 🍎 Build iOS IPA & Simulator App
+    runs-on: macos-14
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🐘 Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: 🔑 Grant Execute Permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: 🔨 Build Kotlin iOS Frameworks
+        run: |
+          ./gradlew :composeApp:linkReleaseFrameworkIosArm64 --stacktrace
+          ./gradlew :composeApp:linkDebugFrameworkIosSimulatorArm64 --stacktrace
+
+      - name: 🍎 Build iOS Release Binary (iPhone Device)
+        run: |
+          xcodebuild -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath ios_build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: 📦 Package Sideloadable iOS IPA
+        run: |
+          mkdir -p ipa_package/Payload
+          APP_PATH=$(find ios_build/Build/Products/Release-iphoneos -name "*.app" | head -n 1)
+          if [ -d "$APP_PATH" ]; then
+            cp -r "$APP_PATH" ipa_package/Payload/
+            cd ipa_package
+            zip -r ../BChat-iOS-Release.ipa Payload
+            cd ..
+          else
+            echo "Error: Release .app not found!" && exit 1
+          fi
+
+      - name: 📱 Build iOS Simulator App (.app.zip)
+        run: |
+          xcodebuild -project iosApp/iosApp.xcodeproj \
+            -scheme iosApp \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath sim_build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+          
+          SIM_APP_PATH=$(find sim_build/Build/Products/Debug-iphonesimulator -name "*.app" | head -n 1)
+          if [ -d "$SIM_APP_PATH" ]; then
+            zip -r BChat-iOS-Simulator.app.zip "$SIM_APP_PATH"
+          fi
+
+      - name: 📦 Upload iOS IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BChat-iOS-Release-IPA
+          path: BChat-iOS-Release.ipa
+          retention-days: 14
+
+      - name: 📦 Upload iOS Simulator App Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BChat-iOS-Simulator-App
+          path: BChat-iOS-Simulator.app.zip
+          retention-days: 14
