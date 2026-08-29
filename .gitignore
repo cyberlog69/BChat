@@ -12,3 +12,5 @@ local.properties
 *.aab
 /app/build/
 .kotlin
+/build_artifacts/
+/binaries/
