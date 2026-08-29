@@ -28,7 +28,7 @@ data class FileTransfer(
     val status: TransferStatus = TransferStatus.PENDING,
     val transportType: TransportType = TransportType.NEARBY_SHARE,
     val transferSpeedBytesPerSec: Long = 0,
-    val startTime: Long = System.currentTimeMillis(),
+    val startTime: Long = 0L,
     val completedTime: Long? = null,
     val errorMessage: String? = null
 ) {
@@ -42,10 +42,10 @@ data class FileTransfer(
         get() {
             val speedMb = transferSpeedBytesPerSec / (1024.0 * 1024.0)
             return if (speedMb >= 1.0) {
-                String.format("%.1f MB/s", speedMb)
+                "${((speedMb * 10).toLong() / 10.0)} MB/s"
             } else {
                 val speedKb = transferSpeedBytesPerSec / 1024.0
-                String.format("%.1f KB/s", speedKb)
+                "${((speedKb * 10).toLong() / 10.0)} KB/s"
             }
         }
 
@@ -53,10 +53,10 @@ data class FileTransfer(
         get() {
             val sizeMb = fileSize / (1024.0 * 1024.0)
             return if (sizeMb >= 1.0) {
-                String.format("%.1f MB", sizeMb)
+                "${((sizeMb * 10).toLong() / 10.0)} MB"
             } else {
                 val sizeKb = fileSize / 1024.0
-                String.format("%.1f KB", sizeKb)
+                "${((sizeKb * 10).toLong() / 10.0)} KB"
             }
         }
 }

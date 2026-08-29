@@ -26,7 +26,7 @@ data class ProtocolPacket(
     val messageId: String? = null,
     val textContent: String? = null,
     val fileAttachment: FileAttachmentMeta? = null,
-    val timestamp: Long = System.currentTimeMillis(),
+    val timestamp: Long = 0L,
     val isTyping: Boolean = false,
     val conversationId: String? = null,
     // E2EE fields
@@ -36,7 +36,7 @@ data class ProtocolPacket(
     val iv: String? = null               // Base64 AES-GCM IV
 ) {
     fun toByteArray(): ByteArray {
-        return jsonConfig.encodeToString(this).toByteArray(Charsets.UTF_8)
+        return jsonConfig.encodeToString(this).encodeToByteArray()
     }
 
     companion object {
@@ -47,7 +47,7 @@ data class ProtocolPacket(
 
         fun fromByteArray(bytes: ByteArray): ProtocolPacket? {
             return try {
-                val str = String(bytes, Charsets.UTF_8)
+                val str = bytes.decodeToString()
                 jsonConfig.decodeFromString<ProtocolPacket>(str)
             } catch (e: Exception) {
                 null

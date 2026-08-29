@@ -1,14 +1,27 @@
 package com.praveen.bchat.data.transport
 
 import com.praveen.bchat.domain.model.*
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.usePinned
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import platform.Foundation.*
 import platform.MultipeerConnectivity.*
 import platform.darwin.NSObject
+import platform.posix.memcpy
 
-class IosMultipeerTransport : P2PTransport, NSObject(), MCSessionDelegateProtocol, MCNearbyServiceAdvertiserDelegateProtocol, MCNearbyServiceBrowserDelegateProtocol {
+interface IosTransportListener {
+    fun onPeerDiscovered(peer: PeerDevice)
+    fun onPeerLost(peerId: String)
+    fun onConnected(peer: PeerDevice)
+    fun onDisconnected(peerId: String)
+    fun onPacketReceived(peerId: String, packet: ProtocolPacket)
+}
+
+@OptIn(ExperimentalForeignApi::class)
+class IosMultipeerTransport : NSObject(), MCSessionDelegateProtocol, MCNearbyServiceAdvertiserDelegateProtocol, MCNearbyServiceBrowserDelegateProtocol {
 
     private val serviceType = "bchat-p2p"
     private var myPeerID: MCPeerID? = null
@@ -16,23 +29,23 @@ class IosMultipeerTransport : P2PTransport, NSObject(), MCSessionDelegateProtoco
     private var advertiser: MCNearbyServiceAdvertiser? = null
     private var browser: MCNearbyServiceBrowser? = null
 
-    private var listener: P2PTransportListener? = null
+    private var listener: IosTransportListener? = null
 
     private val _discoveredPeers = MutableStateFlow<List<PeerDevice>>(emptyList())
-    override val discoveredPeers: StateFlow<List<PeerDevice>> = _discoveredPeers.asStateFlow()
+    val discoveredPeers: StateFlow<List<PeerDevice>> = _discoveredPeers.asStateFlow()
 
     private val _connectedPeers = MutableStateFlow<List<PeerDevice>>(emptyList())
-    override val connectedPeers: StateFlow<List<PeerDevice>> = _connectedPeers.asStateFlow()
+    val connectedPeers: StateFlow<List<PeerDevice>> = _connectedPeers.asStateFlow()
 
-    override val transportType: TransportType = TransportType.NEARBY_SHARE
+    val transportType: TransportType = TransportType.NEARBY_SHARE
 
     private val peerMap = mutableMapOf<String, MCPeerID>()
 
-    override fun setListener(listener: P2PTransportListener) {
+    fun setListener(listener: IosTransportListener) {
         this.listener = listener
     }
 
-    override fun startAdvertising(deviceName: String) {
+    fun startAdvertising(deviceName: String) {
         val peerID = MCPeerID(displayName = deviceName)
         this.myPeerID = peerID
 
@@ -46,12 +59,12 @@ class IosMultipeerTransport : P2PTransport, NSObject(), MCSessionDelegateProtoco
         this.advertiser = adv
     }
 
-    override fun stopAdvertising() {
+    fun stopAdvertising() {
         advertiser?.stopAdvertisingPeer()
         advertiser = null
     }
 
-    override fun startDiscovery() {
+    fun startDiscovery() {
         val peerID = myPeerID ?: MCPeerID(displayName = "BChat-iOS")
         this.myPeerID = peerID
 
@@ -67,47 +80,43 @@ class IosMultipeerTransport : P2PTransport, NSObject(), MCSessionDelegateProtoco
         this.browser = brows
     }
 
-    override fun stopDiscovery() {
+    fun stopDiscovery() {
         browser?.stopBrowsingForPeers()
         browser = null
     }
 
-    override fun connect(peer: PeerDevice) {
+    fun connect(peer: PeerDevice) {
         val targetPeerID = peerMap[peer.id] ?: return
         val currentSession = session ?: return
         browser?.invitePeer(targetPeerID, toSession = currentSession, withContext = null, timeout = 30.0)
     }
 
-    override fun disconnect(peerId: String) {
+    fun disconnect(peerId: String) {
         session?.disconnect()
     }
 
-    override fun disconnectAll() {
+    fun disconnectAll() {
         session?.disconnect()
     }
 
-    override fun sendPacket(peerId: String, packet: ProtocolPacket) {
+    fun sendPacket(peerId: String, packet: ProtocolPacket) {
         val targetPeerID = peerMap[peerId] ?: return
         val bytes = packet.toByteArray()
-        val data = NSData.dataWithBytes(bytes.toCValues(), bytes.size.toULong())
+        val data = bytes.toNSData()
         session?.sendData(data, toPeers = listOf(targetPeerID), withMode = MCSessionSendDataMode.MCSessionSendDataReliable, error = null)
     }
 
-    override fun broadcastPacket(packet: ProtocolPacket) {
+    fun broadcastPacket(packet: ProtocolPacket) {
         val currentSession = session ?: return
         val connected = currentSession.connectedPeers
         if (connected.isNotEmpty()) {
             val bytes = packet.toByteArray()
-            val data = NSData.dataWithBytes(bytes.toCValues(), bytes.size.toULong())
+            val data = bytes.toNSData()
             currentSession.sendData(data, toPeers = connected, withMode = MCSessionSendDataMode.MCSessionSendDataReliable, error = null)
         }
     }
 
-    override fun sendFile(peerId: String, fileUri: Any, messageId: String, onProgress: (FileTransfer) -> Unit) {
-        // Handled via MCSession sendResourceAtURL on iOS
-    }
-
-    override fun release() {
+    fun release() {
         stopAdvertising()
         stopDiscovery()
         session?.disconnect()
@@ -133,7 +142,7 @@ class IosMultipeerTransport : P2PTransport, NSObject(), MCSessionDelegateProtoco
     }
 
     override fun session(session: MCSession, didReceiveData: NSData, fromPeer: MCPeerID) {
-        val bytes = ByteArray(didReceiveData.length.toInt())
+        val bytes = didReceiveData.toByteArray()
         val packet = ProtocolPacket.fromByteArray(bytes)
         if (packet != null) {
             listener?.onPacketReceived(fromPeer.displayName, packet)
@@ -166,8 +175,19 @@ class IosMultipeerTransport : P2PTransport, NSObject(), MCSessionDelegateProtoco
     }
 }
 
-private fun ByteArray.toCValues(): kotlinx.cinterop.CValuesRef<kotlinx.cinterop.ByteVar> {
-    return kotlinx.cinterop.nativeHeap.allocArray<kotlinx.cinterop.ByteVar>(this.size) { index ->
-        this.value = this@toCValues[index]
+@OptIn(ExperimentalForeignApi::class)
+private fun ByteArray.toNSData(): NSData = usePinned { pinned ->
+    NSData.dataWithBytes(pinned.addressOf(0), this.size.toULong())
+}
+
+@OptIn(ExperimentalForeignApi::class)
+private fun NSData.toByteArray(): ByteArray {
+    val size = this.length.toInt()
+    val bytes = ByteArray(size)
+    if (size > 0) {
+        bytes.usePinned { pinned ->
+            memcpy(pinned.addressOf(0), this.bytes, this.length)
+        }
     }
+    return bytes
 }

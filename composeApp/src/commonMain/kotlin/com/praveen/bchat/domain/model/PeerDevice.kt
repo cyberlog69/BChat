@@ -3,6 +3,14 @@ package com.praveen.bchat.domain.model
 import kotlinx.serialization.Serializable
 
 @Serializable
+enum class ConnectionStatus {
+    DISCONNECTED,
+    CONNECTING,
+    CONNECTED,
+    FAILED
+}
+
+@Serializable
 data class PeerDevice(
     val id: String, // Unique endpoint ID, MAC, or IP:Port
     val name: String,
@@ -13,7 +21,7 @@ data class PeerDevice(
     val port: Int? = null,
     val bluetoothAddress: String? = null,
     val nearbyEndpointId: String? = null,
-    val lastSeenTimestamp: Long = System.currentTimeMillis(),
+    val lastSeenTimestamp: Long = 0L,
     val avatarColorSeed: Int = name.hashCode(),
     val publicKey: String? = null,       // Base64 EC Public Key
     val safetyNumber: String? = null     // 6-digit E2EE safety number

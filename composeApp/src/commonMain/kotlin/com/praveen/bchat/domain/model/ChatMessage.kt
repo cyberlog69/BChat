@@ -40,7 +40,7 @@ data class ChatMessage(
     val isOutgoing: Boolean,
     val content: String,
     val type: MessageType = MessageType.TEXT,
-    val timestamp: Long = System.currentTimeMillis(),
+    val timestamp: Long = 0L,
     val status: MessageStatus = MessageStatus.SENT,
     val transportType: TransportType = TransportType.NEARBY_SHARE,
     val isEncrypted: Boolean = true,
