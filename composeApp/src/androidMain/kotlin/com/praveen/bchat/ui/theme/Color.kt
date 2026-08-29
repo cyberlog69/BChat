@@ -3,6 +3,7 @@ package com.praveen.bchat.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val CyanNeon = Color(0xFF00E5FF)
+val CyanNeonGlow = Color(0x3300E5FF)
 val BlueElectric = Color(0xFF0070F3)
 val PurpleNeon = Color(0xFF7928CA)
 val PinkNeon = Color(0xFFFF0080)

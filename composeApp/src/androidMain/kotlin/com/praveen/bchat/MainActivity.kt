@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         // Request runtime permissions for Bluetooth, Nearby Wi-Fi, and Camera
         val requiredPerms = PermissionUtils.getRequiredPermissions()
         if (!PermissionUtils.hasPermissions(this, requiredPerms)) {
-            permissionLauncher.launch(requiredPerms)
+            permissionLauncher.launch(requiredPerms.toTypedArray())
         }
 
         setContent {
