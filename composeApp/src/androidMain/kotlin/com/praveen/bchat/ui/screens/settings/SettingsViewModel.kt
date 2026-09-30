@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import com.praveen.bchat.domain.model.TransportType
+import com.praveen.bchat.ui.theme.AppThemeMode
 import com.praveen.bchat.util.CryptoEngine
 import com.praveen.bchat.util.FileManager
 import com.praveen.bchat.util.NetworkUtils
@@ -14,6 +15,20 @@ import kotlinx.coroutines.flow.asStateFlow
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences("bchat_settings", Context.MODE_PRIVATE)
+
+    private val _themeMode = MutableStateFlow(
+        try {
+            AppThemeMode.valueOf(prefs.getString("theme_mode", AppThemeMode.SYSTEM.name)!!)
+        } catch (e: Exception) {
+            AppThemeMode.SYSTEM
+        }
+    )
+    val themeMode: StateFlow<AppThemeMode> = _themeMode.asStateFlow()
+
+    private val _dynamicColor = MutableStateFlow(
+        prefs.getBoolean("dynamic_color", true)
+    )
+    val dynamicColor: StateFlow<Boolean> = _dynamicColor.asStateFlow()
 
     private val _deviceName = MutableStateFlow(
         prefs.getString("device_name", NetworkUtils.getDeviceName(application)) ?: "BChat Device"
@@ -33,6 +48,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         prefs.getBoolean("auto_accept_files", true)
     )
     val autoAcceptFiles: StateFlow<Boolean> = _autoAcceptFiles.asStateFlow()
+
+    fun updateThemeMode(mode: AppThemeMode) {
+        _themeMode.value = mode
+        prefs.edit().putString("theme_mode", mode.name).apply()
+    }
+
+    fun updateDynamicColor(enable: Boolean) {
+        _dynamicColor.value = enable
+        prefs.edit().putBoolean("dynamic_color", enable).apply()
+    }
 
     fun updateDeviceName(name: String) {
         _deviceName.value = name

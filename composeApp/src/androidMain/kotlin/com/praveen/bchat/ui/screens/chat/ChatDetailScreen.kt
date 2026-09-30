@@ -104,7 +104,7 @@ fun ChatDetailScreen(
                             Text(
                                 text = peerName,
                                 style = Typography.titleMedium,
-                                color = TextPrimary
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 if (conversationId != "mesh_broadcast_group") {
@@ -124,7 +124,7 @@ fun ChatDetailScreen(
                                     Text(
                                         text = "Mesh Broadcast",
                                         style = Typography.labelSmall,
-                                        color = CyanNeon
+                                        color = MaterialTheme.colorScheme.primary
                                     )
                                 }
                             }
@@ -134,19 +134,19 @@ fun ChatDetailScreen(
                 actions = {
                     if (conversationId != "mesh_broadcast_group") {
                         IconButton(onClick = { showSafetyDialog = true }) {
-                            Icon(Icons.Default.VerifiedUser, contentDescription = "Verify Encryption", tint = CyanNeon)
+                            Icon(Icons.Default.VerifiedUser, contentDescription = "Verify Encryption", tint = MaterialTheme.colorScheme.primary)
                         }
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = TextPrimary)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onSurface)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkSurface)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
             )
         },
-        containerColor = DarkBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -186,7 +186,7 @@ fun ChatDetailScreen(
 
             // Chat Input Bar
             Surface(
-                color = DarkSurface,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shadowElevation = 8.dp,
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -202,19 +202,19 @@ fun ChatDetailScreen(
                         Icon(
                             imageVector = Icons.Default.AttachFile,
                             contentDescription = "Attach File",
-                            tint = CyanNeon
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
 
                     TextField(
                         value = inputText,
                         onValueChange = { inputText = it },
-                        placeholder = { Text("Type encrypted message...", color = TextSecondary, fontSize = 14.sp) },
+                        placeholder = { Text("Type encrypted message...", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp) },
                         colors = TextFieldDefaults.colors(
-                            focusedContainerColor = DarkSurfaceElevated,
-                            unfocusedContainerColor = DarkSurfaceElevated,
-                            focusedTextColor = TextPrimary,
-                            unfocusedTextColor = TextPrimary,
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent
                         ),
@@ -234,12 +234,12 @@ fun ChatDetailScreen(
                         modifier = Modifier
                             .size(44.dp)
                             .clip(CircleShape)
-                            .background(CyanNeon)
+                            .background(MaterialTheme.colorScheme.primary)
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = "Send",
-                            tint = DarkBackground,
+                            tint = MaterialTheme.colorScheme.onPrimary,
                             modifier = Modifier.size(20.dp)
                         )
                     }
@@ -277,7 +277,9 @@ fun ChatMessageBubble(
         RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 4.dp, bottomEnd = 16.dp)
     }
 
-    val bubbleBg = if (isOutgoing) BlueElectric else DarkSurface
+    val bubbleBg = if (isOutgoing) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainerHigh
+    val bubbleTextColor = if (isOutgoing) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+    val bubbleSubTextColor = if (isOutgoing) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.75f) else MaterialTheme.colorScheme.onSurfaceVariant
 
     Box(
         modifier = Modifier
@@ -335,7 +337,7 @@ fun ChatMessageBubble(
                     } else {
                         Text(
                             text = message.content,
-                            color = Color.White,
+                            color = bubbleTextColor,
                             fontSize = 14.sp
                         )
                     }
@@ -351,7 +353,7 @@ fun ChatMessageBubble(
                             Icon(
                                 imageVector = Icons.Default.Lock,
                                 contentDescription = "Encrypted",
-                                tint = Color.White.copy(alpha = 0.6f),
+                                tint = bubbleSubTextColor,
                                 modifier = Modifier.size(10.dp)
                             )
                             Spacer(modifier = Modifier.width(3.dp))
@@ -359,7 +361,7 @@ fun ChatMessageBubble(
 
                         Text(
                             text = formattedTime,
-                            color = Color.White.copy(alpha = 0.7f),
+                            color = bubbleSubTextColor,
                             fontSize = 10.sp
                         )
 
@@ -374,7 +376,11 @@ fun ChatMessageBubble(
                                     MessageStatus.FAILED -> Icons.Default.ErrorOutline
                                 },
                                 contentDescription = null,
-                                tint = if (message.status == MessageStatus.READ) CyanNeon else Color.White.copy(alpha = 0.7f),
+                                tint = if (message.status == MessageStatus.READ) {
+                                    MaterialTheme.colorScheme.inversePrimary
+                                } else {
+                                    bubbleSubTextColor
+                                },
                                 modifier = Modifier.size(12.dp)
                             )
                         }

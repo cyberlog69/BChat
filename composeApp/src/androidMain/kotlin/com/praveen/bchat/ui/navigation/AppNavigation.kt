@@ -18,10 +18,6 @@ import com.praveen.bchat.ui.screens.discover.DiscoverScreen
 import com.praveen.bchat.ui.screens.hotspot.HotspotScreen
 import com.praveen.bchat.ui.screens.settings.SettingsScreen
 import com.praveen.bchat.ui.screens.transfers.TransfersScreen
-import com.praveen.bchat.ui.theme.CyanNeon
-import com.praveen.bchat.ui.theme.DarkBackground
-import com.praveen.bchat.ui.theme.DarkSurface
-import com.praveen.bchat.ui.theme.TextSecondary
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -34,8 +30,8 @@ fun AppNavigation(navController: NavHostController) {
         bottomBar = {
             if (showBottomBar) {
                 NavigationBar(
-                    containerColor = DarkSurface,
-                    tonalElevation = 8.dp
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    tonalElevation = 3.dp
                 ) {
                     bottomNavItems.forEach { screen ->
                         val selected = currentRoute == screen.route
@@ -66,18 +62,18 @@ fun AppNavigation(navController: NavHostController) {
                                 )
                             },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = DarkBackground,
-                                selectedTextColor = CyanNeon,
-                                indicatorColor = CyanNeon,
-                                unselectedIconColor = TextSecondary,
-                                unselectedTextColor = TextSecondary
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         )
                     }
                 }
             }
         },
-        containerColor = DarkBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         NavHost(
             navController = navController,

@@ -31,8 +31,8 @@ enum class LogoSize(val dp: Dp, val cornerDp: Dp) {
 
 /**
  * Modern Material 3 Brand Logo for BChat.
- * Visualizes a stylized P2P mesh network with dual connected speech nodes
- * and an energetic turbo data wave in an expressive M3 squircle container.
+ * Visualizes a stylized 'B' monogram interwoven with an active P2P mesh network,
+ * satellite peer nodes, and turbo data transmission beam.
  */
 @Composable
 fun BChatM3Logo(
@@ -86,67 +86,119 @@ fun BChatM3Logo(
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(size.dp * 0.18f)
+                .padding(size.dp * 0.16f)
         ) {
             val w = this.size.width
             val h = this.size.height
 
-            // 1. Left Peer Node (Chat Bubble / Radio Node)
-            val leftNodeCenter = Offset(w * 0.32f, h * 0.42f)
-            val leftNodeRadius = w * 0.22f
+            val strokeWidth = (w * 0.11f).coerceAtLeast(2.5f)
+            val spineX = w * 0.22f
+            val spineTop = h * 0.14f
+            val spineBottom = h * 0.86f
+            val midY = h * 0.50f
 
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(CyanNeon.copy(alpha = 0.9f), CyanNeon.copy(alpha = 0.4f)),
-                    center = leftNodeCenter,
-                    radius = leftNodeRadius
+            // 1. Stylized "B" - Vertical Spine (Neon Cyan)
+            drawLine(
+                brush = Brush.verticalGradient(
+                    colors = listOf(CyanNeon, BlueElectric),
+                    startY = spineTop,
+                    endY = spineBottom
                 ),
-                center = leftNodeCenter,
-                radius = leftNodeRadius
+                start = Offset(spineX, spineTop),
+                end = Offset(spineX, spineBottom),
+                strokeWidth = strokeWidth,
+                cap = StrokeCap.Round
             )
 
-            // 2. Right Peer Node
-            val rightNodeCenter = Offset(w * 0.68f, h * 0.58f)
-            val rightNodeRadius = w * 0.20f
-
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(PurpleNeon.copy(alpha = 0.95f), BlueElectric.copy(alpha = 0.5f)),
-                    center = rightNodeCenter,
-                    radius = rightNodeRadius
-                ),
-                center = rightNodeCenter,
-                radius = rightNodeRadius
-            )
-
-            // 3. Lightning / Data Beam bridging left and right nodes
-            val beamPath = Path().apply {
-                moveTo(leftNodeCenter.x, leftNodeCenter.y)
-                lineTo(w * 0.48f, h * 0.34f)
-                lineTo(w * 0.42f, h * 0.66f)
-                lineTo(rightNodeCenter.x, rightNodeCenter.y)
+            // 2. Stylized "B" - Upper Lobe (Arc curving right to Cyan/Blue)
+            val upperLobePath = Path().apply {
+                moveTo(spineX, spineTop)
+                cubicTo(
+                    w * 0.76f, spineTop,
+                    w * 0.76f, midY,
+                    spineX, midY
+                )
             }
+            drawPath(
+                path = upperLobePath,
+                brush = Brush.horizontalGradient(listOf(CyanNeon, BlueElectric)),
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
+            )
 
+            // 3. Stylized "B" - Lower Lobe (Arc curving right to Purple Neon)
+            val lowerLobePath = Path().apply {
+                moveTo(spineX, midY)
+                cubicTo(
+                    w * 0.86f, midY,
+                    w * 0.86f, spineBottom,
+                    spineX, spineBottom
+                )
+            }
+            drawPath(
+                path = lowerLobePath,
+                brush = Brush.horizontalGradient(listOf(BlueElectric, PurpleNeon)),
+                style = Stroke(width = strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
+            )
+
+            // 4. P2P Turbo Transmission Beam (Zig-Zag Lightning connecting nodes)
+            val beamPath = Path().apply {
+                moveTo(spineX, midY)
+                lineTo(w * 0.44f, h * 0.36f)
+                lineTo(w * 0.40f, h * 0.64f)
+                lineTo(w * 0.65f, midY)
+            }
             drawPath(
                 path = beamPath,
                 color = Color.White.copy(alpha = 0.95f),
                 style = Stroke(
-                    width = (w * 0.08f).coerceAtLeast(2f),
+                    width = (w * 0.07f).coerceAtLeast(1.8f),
                     cap = StrokeCap.Round,
                     join = StrokeJoin.Round
                 )
             )
 
-            // 4. Little glowing beacon dots
+            // 5. Glowing Peer Radio Satellite Nodes
+            val nodeRadius = (w * 0.08f).coerceAtLeast(2.5f)
+            // Node A: On the spine junction
             drawCircle(
                 color = Color.White,
-                radius = (w * 0.06f).coerceAtLeast(1.5f),
-                center = leftNodeCenter
+                radius = nodeRadius * 0.9f,
+                center = Offset(spineX, midY)
+            )
+
+            // Node B: Upper lobe satellite
+            drawCircle(
+                color = CyanNeon,
+                radius = nodeRadius,
+                center = Offset(w * 0.64f, h * 0.32f)
             )
             drawCircle(
                 color = Color.White,
-                radius = (w * 0.05f).coerceAtLeast(1.5f),
-                center = rightNodeCenter
+                radius = nodeRadius * 0.5f,
+                center = Offset(w * 0.64f, h * 0.32f)
+            )
+
+            // Node C: Lower lobe satellite
+            drawCircle(
+                color = PurpleNeon,
+                radius = nodeRadius,
+                center = Offset(w * 0.70f, h * 0.68f)
+            )
+            drawCircle(
+                color = Color.White,
+                radius = nodeRadius * 0.5f,
+                center = Offset(w * 0.70f, h * 0.68f)
+            )
+
+            // 6. Wireless Broadcast Wave (Top-right corner)
+            drawArc(
+                color = CyanNeon.copy(alpha = 0.8f * pulseGlow),
+                startAngle = 270f,
+                sweepAngle = 75f,
+                useCenter = false,
+                topLeft = Offset(w * 0.55f, h * 0.05f),
+                size = Size(w * 0.38f, h * 0.38f),
+                style = Stroke(width = (w * 0.05f).coerceAtLeast(1.5f), cap = StrokeCap.Round)
             )
         }
     }

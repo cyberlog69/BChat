@@ -4,7 +4,24 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+    <!-- Deep Material 3 Cyber Container Background -->
     <path
-        android:fillColor="#0F172A"
+        android:fillColor="#0B0F19"
         android:pathData="M0,0h108v108h-108z" />
+
+    <!-- Outer Ambient Radial Waves -->
+    <path
+        android:fillColor="#131B2E"
+        android:pathData="M54,54m-44,0a44,44 0 1,1 88,0a44,44 0 1,1 -88,0" />
+
+    <!-- Inner Elevated Tonal Well -->
+    <path
+        android:fillColor="#1B253D"
+        android:pathData="M54,54m-34,0a34,34 0 1,1 68,0a34,34 0 1,1 -68,0" />
+
+    <!-- Subtle Mesh Grid Accent Lines -->
+    <path
+        android:strokeColor="#243252"
+        android:strokeWidth="0.8"
+        android:pathData="M24,54h60M54,24v60M33,33l42,42M33,75l42,-42" />
 </vector>

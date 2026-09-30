@@ -56,13 +56,13 @@ fun HotspotScreen(
                 },
                 actions = {
                     IconButton(onClick = { viewModel.refreshNetwork() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = CyanNeon)
+                        Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = MaterialTheme.colorScheme.primary)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = DarkBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -73,7 +73,7 @@ fun HotspotScreen(
         ) {
             // Hotspot Server Status Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -86,13 +86,13 @@ fun HotspotScreen(
                         Column {
                             Text(
                                 text = "Local Socket Server",
-                                color = TextPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp
                             )
                             Text(
                                 text = if (localIp != null) "IP: $localIp (Port 8888)" else "Not connected to Wi-Fi/Hotspot",
-                                color = if (localIp != null) CyanNeon else AccentOrange,
+                                color = if (localIp != null) MaterialTheme.colorScheme.primary else AccentOrange,
                                 fontSize = 13.sp
                             )
                         }
@@ -103,8 +103,8 @@ fun HotspotScreen(
                                 if (it) viewModel.startHotspotServer() else viewModel.stopHotspotServer()
                             },
                             colors = SwitchDefaults.colors(
-                                checkedThumbColor = DarkBackground,
-                                checkedTrackColor = CyanNeon
+                                checkedThumbColor = MaterialTheme.colorScheme.surface,
+                                checkedTrackColor = MaterialTheme.colorScheme.primary
                             )
                         )
                     }
@@ -115,7 +115,7 @@ fun HotspotScreen(
 
             // QR Code for Instant Hotspot Pairing
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurfaceElevated),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -126,13 +126,13 @@ fun HotspotScreen(
                     Text(
                         text = "Hotspot Join QR Code",
                         style = Typography.titleMedium,
-                        color = TextPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Have another peer scan this to join your offline network",
                         style = Typography.bodyMedium,
-                        color = TextSecondary
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -159,7 +159,7 @@ fun HotspotScreen(
 
             // Direct IP Connect Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -167,12 +167,12 @@ fun HotspotScreen(
                     Text(
                         text = "Direct Socket Connect",
                         style = Typography.titleMedium,
-                        color = TextPrimary
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Connect directly by entering a peer's local Wi-Fi or Hotspot IP",
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 12.sp
                     )
 
@@ -187,10 +187,10 @@ fun HotspotScreen(
                             onValueChange = { manualIpInput = it },
                             label = { Text("IP Address (e.g. 192.168.43.1)") },
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = CyanNeon,
-                                unfocusedBorderColor = DarkSurfaceElevated,
-                                focusedTextColor = TextPrimary,
-                                unfocusedTextColor = TextPrimary
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                             ),
                             modifier = Modifier.weight(2f)
                         )
@@ -200,10 +200,10 @@ fun HotspotScreen(
                             onValueChange = { manualPortInput = it },
                             label = { Text("Port") },
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = CyanNeon,
-                                unfocusedBorderColor = DarkSurfaceElevated,
-                                focusedTextColor = TextPrimary,
-                                unfocusedTextColor = TextPrimary
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                             ),
                             modifier = Modifier.weight(1f)
                         )
@@ -219,7 +219,10 @@ fun HotspotScreen(
                                 onNavigateToChat("${manualIpInput.trim()}:$port", "Wi-Fi Peer ($manualIpInput)")
                             }
                         },
-                        colors = ButtonDefaults.buttonColors(containerColor = CyanNeon, contentColor = DarkBackground),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
                         shape = RoundedCornerShape(10.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {

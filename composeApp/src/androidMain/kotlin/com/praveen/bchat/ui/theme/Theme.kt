@@ -80,10 +80,21 @@ val M3Shapes = Shapes(
     extraLarge = RoundedCornerShape(32.dp)
 )
 
+enum class AppThemeMode(val title: String) {
+    SYSTEM("System Default"),
+    DARK("Dark Theme"),
+    LIGHT("Light Theme")
+}
+
 @Composable
 fun BChatTheme(
-    darkTheme: Boolean = true, // Default to sleek cyberpunk dark M3 theme
-    dynamicColor: Boolean = false, // Set to true to enable Material You system palette
+    themeMode: AppThemeMode = AppThemeMode.SYSTEM,
+    darkTheme: Boolean = when (themeMode) {
+        AppThemeMode.SYSTEM -> isSystemInDarkTheme()
+        AppThemeMode.DARK -> true
+        AppThemeMode.LIGHT -> false
+    },
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

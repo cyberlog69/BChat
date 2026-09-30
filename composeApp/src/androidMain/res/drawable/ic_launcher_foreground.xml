@@ -1,12 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
+
+    <!-- Elevated Squircle Brand Plate -->
     <path
-        android:fillColor="#00D2FF"
-        android:pathData="M30,34h48c3.3,0 6,2.7 6,6v28c0,3.3 -2.7,6 -6,6H44l-14,10V40C30,36.7 32.7,34 36,34z" />
+        android:fillColor="#151D2D"
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.5"
+        android:pathData="M38,26 L70,26 A14,14 0 0,1 84,40 L84,68 A14,14 0 0,1 70,82 L38,82 A14,14 0 0,1 24,68 L24,40 A14,14 0 0,1 38,26 Z" />
+
+    <!-- Stylized "B" Monogram - Vertical Backbone -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M34,34 H42 A2,2 0 0,1 44,36 V72 A2,2 0 0,1 42,74 H34 A2,2 0 0,1 32,72 V36 A2,2 0 0,1 34,34 Z" />
+
+    <!-- Stylized "B" - Upper Lobe -->
+    <path
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="4.5"
+        android:strokeCap="round"
+        android:strokeJoin="round"
+        android:fillColor="#00000000"
+        android:pathData="M43,36.5 H58 C65,36.5 69,40 69,45 C69,50 65,53.5 58,53.5 H43" />
+
+    <!-- Stylized "B" - Lower Lobe -->
+    <path
+        android:strokeColor="#7C3AED"
+        android:strokeWidth="4.5"
+        android:strokeCap="round"
+        android:strokeJoin="round"
+        android:fillColor="#00000000"
+        android:pathData="M43,53.5 H61 C69,53.5 73,57.5 73,63.5 C73,69.5 69,73.5 61,73.5 H43" />
+
+    <!-- P2P Mesh Interconnect Beams -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeCap="round"
+        android:strokeJoin="round"
+        android:fillColor="#00000000"
+        android:pathData="M38,54 L52,44 L50,56 L64,48 L56,66" />
+
+    <!-- P2P Peer Radio Nodes (Glowing Satellite Nodes) -->
+    <!-- Node 1: Left Spine Anchor -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M48,46h12v4H48zM42,54h24v4H42zM42,62h16v4H42z" />
+        android:pathData="M38,54m-3.5,0a3.5,3.5 0 1,1 7,0a3.5,3.5 0 1,1 -7,0" />
+
+    <!-- Node 2: Top Lobe Peer Node (Cyan) -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M60,45m-4.5,0a4.5,4.5 0 1,1 9,0a4.5,4.5 0 1,1 -9,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M60,45m-2,0a2,2 0 1,1 4,0a2,2 0 1,1 -4,0" />
+
+    <!-- Node 3: Bottom Lobe Peer Node (Purple) -->
+    <path
+        android:fillColor="#A78BFA"
+        android:pathData="M63,64m-4.5,0a4.5,4.5 0 1,1 9,0a4.5,4.5 0 1,1 -9,0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M63,64m-2,0a2,2 0 1,1 4,0a2,2 0 1,1 -4,0" />
+
+    <!-- Wireless Broadcast Arcs (Top Right Corner) -->
+    <path
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.8"
+        android:strokeCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M72,32 C75,35 77,39 77,43" />
+    <path
+        android:strokeColor="#A78BFA"
+        android:strokeWidth="1.8"
+        android:strokeCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M76,28 C80,32 82,37 82,43" />
 </vector>

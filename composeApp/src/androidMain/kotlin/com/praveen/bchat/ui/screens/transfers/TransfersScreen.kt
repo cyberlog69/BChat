@@ -63,7 +63,7 @@ fun TransfersScreen(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = DarkBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -73,7 +73,7 @@ fun TransfersScreen(
         ) {
             // Speed Highlight Banner
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurfaceElevated),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -86,12 +86,12 @@ fun TransfersScreen(
                         modifier = Modifier
                             .size(48.dp)
                             .clip(CircleShape)
-                            .background(CyanNeon.copy(alpha = 0.15f))
+                            .background(MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f))
                     ) {
                         Icon(
                             Icons.Default.Bolt,
                             contentDescription = null,
-                            tint = CyanNeon,
+                            tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(28.dp)
                         )
                     }
@@ -101,13 +101,13 @@ fun TransfersScreen(
                     Column {
                         Text(
                             text = "Ultra-Fast Offline Sharing",
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp
                         )
                         Text(
                             text = "Nearby Share & Wi-Fi Direct speeds up to 40+ MB/s",
-                            color = TextSecondary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 12.sp
                         )
                     }
@@ -119,8 +119,8 @@ fun TransfersScreen(
             // Tab Selector
             TabRow(
                 selectedTabIndex = selectedTab,
-                containerColor = DarkSurface,
-                contentColor = CyanNeon,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
                 divider = {},
                 indicator = {}
             ) {
@@ -131,7 +131,7 @@ fun TransfersScreen(
                         Text(
                             "Transfers (${transfers.size})",
                             fontWeight = if (selectedTab == 0) FontWeight.Bold else FontWeight.Normal,
-                            color = if (selectedTab == 0) CyanNeon else TextSecondary
+                            color = if (selectedTab == 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 )
@@ -142,7 +142,7 @@ fun TransfersScreen(
                         Text(
                             "Saved Files (${receivedFiles.size})",
                             fontWeight = if (selectedTab == 1) FontWeight.Bold else FontWeight.Normal,
-                            color = if (selectedTab == 1) CyanNeon else TextSecondary
+                            color = if (selectedTab == 1) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 )
@@ -162,20 +162,20 @@ fun TransfersScreen(
                             Icon(
                                 Icons.Default.SwapVert,
                                 contentDescription = null,
-                                tint = TextSecondary.copy(alpha = 0.5f),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                 modifier = Modifier.size(56.dp)
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "No file transfers yet",
-                                color = TextPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = "Send photos, videos, apps or docs to any connected peer",
-                                color = TextSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 13.sp
                             )
                         }
@@ -227,7 +227,7 @@ fun TransfersScreen(
                             .weight(1f)
                             .fillMaxWidth()
                     ) {
-                        Text("No received files in BChat directory", color = TextSecondary)
+                        Text("No received files in BChat directory", color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 } else {
                     LazyColumn(
@@ -260,7 +260,7 @@ fun SavedFileItem(
     }
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = DarkSurface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -276,7 +276,7 @@ fun SavedFileItem(
                 else if (mimeType.startsWith("audio/")) Icons.Default.AudioFile
                 else Icons.Default.InsertDriveFile,
                 contentDescription = null,
-                tint = CyanNeon,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(32.dp)
             )
 
@@ -285,7 +285,7 @@ fun SavedFileItem(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = file.name,
-                    color = TextPrimary,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
                     maxLines = 1,
@@ -294,13 +294,13 @@ fun SavedFileItem(
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "${FileManager.formatFileSize(file.length())} • $formattedDate",
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 12.sp
                 )
             }
 
             IconButton(onClick = onShare) {
-                Icon(Icons.Default.Share, contentDescription = "Share", tint = TextSecondary)
+                Icon(Icons.Default.Share, contentDescription = "Share", tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

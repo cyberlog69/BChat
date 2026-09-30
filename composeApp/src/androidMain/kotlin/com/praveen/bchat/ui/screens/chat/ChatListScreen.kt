@@ -53,7 +53,7 @@ fun ChatListScreen(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = DarkBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -66,7 +66,7 @@ fun ChatListScreen(
                 Text(
                     text = "Connected Peers (${connectedPeers.size})",
                     style = Typography.titleMedium,
-                    color = TextSecondary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
 
@@ -87,7 +87,7 @@ fun ChatListScreen(
 
             // Mesh Broadcast Channel Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurfaceElevated),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,18 +112,18 @@ fun ChatListScreen(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = "📢 Mesh Broadcast Group",
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp
                         )
                         Text(
                             text = "Broadcast message to all connected peers",
-                            color = CyanNeon,
+                            color = MaterialTheme.colorScheme.primary,
                             fontSize = 12.sp
                         )
                     }
 
-                    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = TextSecondary)
+                    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
 
@@ -132,7 +132,7 @@ fun ChatListScreen(
             Text(
                 text = "Conversations",
                 style = Typography.titleMedium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
@@ -147,26 +147,29 @@ fun ChatListScreen(
                         Icon(
                             Icons.Default.ChatBubbleOutline,
                             contentDescription = null,
-                            tint = TextSecondary.copy(alpha = 0.5f),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                             modifier = Modifier.size(56.dp)
                         )
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = "No offline conversations yet",
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = "Connect with nearby peers to start chatting",
-                            color = TextSecondary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 13.sp
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(
                             onClick = onNavigateToDiscover,
-                            colors = ButtonDefaults.buttonColors(containerColor = CyanNeon, contentColor = DarkBackground)
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
+                            )
                         ) {
                             Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
@@ -228,7 +231,7 @@ fun ConnectedPeerAvatar(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = peer.name,
-            color = TextPrimary,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 11.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -247,7 +250,7 @@ fun ConversationItem(
     }
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = DarkSurface),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
         shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxWidth()
@@ -282,7 +285,7 @@ fun ConversationItem(
                 ) {
                     Text(
                         text = conversation.peerName,
-                        color = TextPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 15.sp,
                         maxLines = 1,
@@ -290,7 +293,7 @@ fun ConversationItem(
                     )
                     Text(
                         text = formattedTime,
-                        color = TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 11.sp
                     )
                 }
@@ -304,7 +307,7 @@ fun ConversationItem(
                 ) {
                     Text(
                         text = conversation.lastMessageText,
-                        color = if (conversation.unreadCount > 0) TextPrimary else TextSecondary,
+                        color = if (conversation.unreadCount > 0) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 13.sp,
                         fontWeight = if (conversation.unreadCount > 0) FontWeight.Bold else FontWeight.Normal,
                         maxLines = 1,
@@ -318,11 +321,11 @@ fun ConversationItem(
                             modifier = Modifier
                                 .size(20.dp)
                                 .clip(CircleShape)
-                                .background(CyanNeon)
+                                .background(MaterialTheme.colorScheme.primary)
                         ) {
                             Text(
                                 text = conversation.unreadCount.toString(),
-                                color = DarkBackground,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold
                             )
