@@ -64,6 +64,7 @@ class P2PManager(
     // E2EE Session Key Store: peerId -> SecretKey
     private val sessionKeys = ConcurrentHashMap<String, SecretKey>()
     private val peerPublicKeys = ConcurrentHashMap<String, String>()
+    private val peerSafetyNumbers = ConcurrentHashMap<String, String>()
 
     private val _incomingMessages = MutableSharedFlow<ChatMessage>(extraBufferCapacity = 64)
     val incomingMessages: SharedFlow<ChatMessage> = _incomingMessages.asSharedFlow()
@@ -92,6 +93,31 @@ class P2PManager(
     fun setTransportFilter(type: TransportType?) {
         _activeTransportFilter.value = type
         updatePeersFlow()
+    }
+
+    fun getPeerPublicKey(peerId: String): String? {
+        return peerPublicKeys[peerId] ?: _discoveredPeersMap[peerId]?.publicKey
+    }
+
+    fun getPeerSafetyNumber(peerId: String): String? {
+        return peerSafetyNumbers[peerId] ?: _discoveredPeersMap[peerId]?.safetyNumber
+    }
+
+    fun startDiscovery() {
+        startAllDiscovery()
+    }
+
+    fun stopDiscovery() {
+        stopAllDiscovery()
+    }
+
+    fun startAdvertising(name: String? = null) {
+        val deviceName = name ?: NetworkUtils.getDeviceName(context)
+        startAllAdvertising(deviceName)
+    }
+
+    fun stopAdvertising() {
+        stopAllAdvertising()
     }
 
     fun startAllAdvertising(localDeviceName: String) {
@@ -150,9 +176,25 @@ class P2PManager(
         transport?.disconnect(peer.id)
         sessionKeys.remove(peer.id)
         peerPublicKeys.remove(peer.id)
+        peerSafetyNumbers.remove(peer.id)
         _discoveredPeersMap.remove(peer.id)
         updatePeersFlow()
         updateConnectedPeersFlow()
+    }
+
+    fun disconnectPeer(peerId: String) {
+        val peer = _discoveredPeersMap[peerId] ?: _connectedPeers.value.find { it.id == peerId }
+        if (peer != null) {
+            disconnectPeer(peer)
+        } else {
+            allTransports.forEach { it.disconnect(peerId) }
+            sessionKeys.remove(peerId)
+            peerPublicKeys.remove(peerId)
+            peerSafetyNumbers.remove(peerId)
+            _discoveredPeersMap.remove(peerId)
+            updatePeersFlow()
+            updateConnectedPeersFlow()
+        }
     }
 
     fun sendTextMessage(
@@ -357,6 +399,7 @@ class P2PManager(
         _discoveredPeersMap.remove(peerId)
         sessionKeys.remove(peerId)
         peerPublicKeys.remove(peerId)
+        peerSafetyNumbers.remove(peerId)
         updatePeersFlow()
     }
 
@@ -401,6 +444,7 @@ class P2PManager(
         }
         sessionKeys.remove(peerId)
         peerPublicKeys.remove(peerId)
+        peerSafetyNumbers.remove(peerId)
         updatePeersFlow()
         updateConnectedPeersFlow()
         scope.launch {
@@ -534,6 +578,7 @@ class P2PManager(
                 sessionKeys[peerId] = sessionKey
                 val myPubKey = CryptoEngine.getLocalPublicKeyBase64()
                 val safetyNumber = CryptoEngine.computeSafetyNumber(myPubKey, peerPubKey)
+                peerSafetyNumbers[peerId] = safetyNumber
 
                 val existing = _discoveredPeersMap[peerId]
                 if (existing != null) {
@@ -589,7 +634,7 @@ class P2PManager(
             // enrich with E2EE metadata
             it.copy(
                 publicKey = peerPublicKeys[it.id],
-                safetyNumber = _discoveredPeersMap[it.id]?.safetyNumber
+                safetyNumber = _discoveredPeersMap[it.id]?.safetyNumber ?: peerSafetyNumbers[it.id]
             )
         }
     }

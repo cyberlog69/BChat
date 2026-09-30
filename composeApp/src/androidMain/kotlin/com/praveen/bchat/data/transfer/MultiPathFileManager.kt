@@ -268,16 +268,18 @@ class MultiPathFileManager(
 
                                 // Reposition stream if out of order
                                 if (currentStreamPos != targetOffset) {
-                                    input.close()
-                                    input = context.contentResolver.openInputStream(fileUri) ?: break
-                                    input.skip(targetOffset)
+                                    input?.close()
+                                    val newStream = context.contentResolver.openInputStream(fileUri) ?: break
+                                    newStream.skip(targetOffset)
+                                    input = newStream
                                     currentStreamPos = targetOffset
                                 }
 
+                                val activeStream = input ?: break
                                 val buffer = ByteArray(expectedChunkLen)
                                 var bytesRead = 0
                                 while (bytesRead < expectedChunkLen) {
-                                    val r = input.read(buffer, bytesRead, expectedChunkLen - bytesRead)
+                                    val r = activeStream.read(buffer, bytesRead, expectedChunkLen - bytesRead)
                                     if (r == -1) break
                                     bytesRead += r
                                 }
