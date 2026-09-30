@@ -3,6 +3,7 @@ name: Build & Package (Android & iOS)
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
@@ -124,3 +125,53 @@ jobs:
           name: BChat-iOS-Simulator-App
           path: BChat-iOS-Simulator.app.zip
           retention-days: 14
+
+  publish-release:
+    name: 🚀 Publish GitHub Release
+    needs: [build-android, build-ios]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 📥 Download Android APK Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BChat-Android-Debug-APK
+          path: release_assets/
+
+      - name: 📥 Download iOS IPA Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BChat-iOS-Release-IPA
+          path: release_assets/
+
+      - name: 📥 Download iOS Simulator App Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: BChat-iOS-Simulator-App
+          path: release_assets/
+
+      - name: 🏷️ Rename Assets with Version Tag
+        run: |
+          TAG_NAME="${{ github.ref_name }}"
+          cd release_assets
+          APK=$(find . -name "*.apk" | head -n 1)
+          if [ -n "$APK" ]; then
+            mv "$APK" "BChat-${TAG_NAME}-Android.apk"
+          fi
+          if [ -f "BChat-iOS-Release.ipa" ]; then
+            mv "BChat-iOS-Release.ipa" "BChat-${TAG_NAME}-iOS.ipa"
+          fi
+          if [ -f "BChat-iOS-Simulator.app.zip" ]; then
+            mv "BChat-iOS-Simulator.app.zip" "BChat-${TAG_NAME}-iOS-Simulator.app.zip"
+          fi
+
+      - name: 🚀 Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" release_assets/* \
+            --title "BChat ${{ github.ref_name }}" \
+            --generate-notes
+
