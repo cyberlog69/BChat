@@ -5,23 +5,23 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Stylized "B" Monogram - Vertical Backbone (Cyan) -->
+    <!-- Stylized "B" Monogram - Vertical Backbone -->
     <path
-        android:fillColor="#00E5FF"
+        android:fillColor="#FFFFFF"
         android:pathData="M35,33 H43 A2,2 0 0,1 45,35 V73 A2,2 0 0,1 43,75 H35 A2,2 0 0,1 33,73 V35 A2,2 0 0,1 35,33 Z" />
 
-    <!-- Stylized "B" - Upper Mesh Lobe (Cyan to Blue) -->
+    <!-- Stylized "B" - Upper Mesh Lobe -->
     <path
-        android:strokeColor="#00E5FF"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:fillColor="#00000000"
         android:pathData="M44,36 H60 C67,36 71,40 71,45.5 C71,51 67,54 60,54 H44" />
 
-    <!-- Stylized "B" - Lower Mesh Lobe (Purple Neon) -->
+    <!-- Stylized "B" - Lower Mesh Lobe -->
     <path
-        android:strokeColor="#7C3AED"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
@@ -37,37 +37,31 @@
         android:fillColor="#00000000"
         android:pathData="M39,54 L52,44 L50,56 L64,48 L56,66" />
 
-    <!-- P2P Peer Radio Nodes (Glowing Satellite Mesh Anchors) -->
+    <!-- P2P Peer Radio Nodes -->
     <!-- Node 1: Left Spine Anchor -->
     <path
         android:fillColor="#FFFFFF"
         android:pathData="M39,54m-4,0a4,4 0 1,1 8,0a4,4 0 1,1 -8,0" />
 
-    <!-- Node 2: Top Lobe Satellite Peer Node (Cyan) -->
+    <!-- Node 2: Top Lobe Satellite Peer Node -->
     <path
-        android:fillColor="#00E5FF"
+        android:fillColor="#FFFFFF"
         android:pathData="M62,45m-5,0a5,5 0 1,1 10,0a5,5 0 1,1 -10,0" />
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M62,45m-2.2,0a2.2,2.2 0 1,1 4.4,0a2.2,2.2 0 1,1 -4.4,0" />
 
-    <!-- Node 3: Bottom Lobe Satellite Peer Node (Purple) -->
-    <path
-        android:fillColor="#A78BFA"
-        android:pathData="M65,65m-5,0a5,5 0 1,1 10,0a5,5 0 1,1 -10,0" />
+    <!-- Node 3: Bottom Lobe Satellite Peer Node -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M65,65m-2.2,0a2.2,2.2 0 1,1 4.4,0a2.2,2.2 0 1,1 -4.4,0" />
+        android:pathData="M65,65m-5,0a5,5 0 1,1 10,0a5,5 0 1,1 -10,0" />
 
     <!-- Wireless Broadcast Arcs (Top Right Corner) -->
     <path
-        android:strokeColor="#00E5FF"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
         android:pathData="M73,31 C77,35 79,40 79,45" />
     <path
-        android:strokeColor="#A78BFA"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:fillColor="#00000000"

@@ -12,16 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.praveen.bchat.ui.theme.BlueElectric
-import com.praveen.bchat.ui.theme.CyanNeon
-import com.praveen.bchat.ui.theme.PurpleNeon
 
 enum class LogoSize(val dp: Dp, val cornerDp: Dp) {
     Small(32.dp, 8.dp),
@@ -31,6 +27,7 @@ enum class LogoSize(val dp: Dp, val cornerDp: Dp) {
 
 /**
  * Modern Material 3 Brand Logo for BChat.
+ * Fully adaptive to the active theme (System / Dark / Light / Material You Dynamic Wallpaper).
  * Visualizes a stylized 'B' monogram interwoven with an active P2P mesh network,
  * satellite peer nodes, and turbo data transmission beam.
  */
@@ -40,10 +37,16 @@ fun BChatM3Logo(
     size: LogoSize = LogoSize.Medium,
     animated: Boolean = true
 ) {
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val secondaryColor = MaterialTheme.colorScheme.secondary
+    val tertiaryColor = MaterialTheme.colorScheme.tertiary
+    val onSurfaceColor = MaterialTheme.colorScheme.onSurface
+    val containerBg = MaterialTheme.colorScheme.surfaceContainerHigh
+
     val infiniteTransition = rememberInfiniteTransition(label = "M3LogoPulse")
     val pulseGlow by if (animated) {
         infiniteTransition.animateFloat(
-            initialValue = 0.7f,
+            initialValue = 0.65f,
             targetValue = 1.0f,
             animationSpec = infiniteRepeatable(
                 animation = tween(1800, easing = FastOutSlowInEasing),
@@ -57,9 +60,9 @@ fun BChatM3Logo(
 
     val gradientBrush = Brush.linearGradient(
         colors = listOf(
-            CyanNeon.copy(alpha = pulseGlow),
-            BlueElectric,
-            PurpleNeon
+            primaryColor.copy(alpha = pulseGlow),
+            secondaryColor,
+            tertiaryColor
         ),
         start = Offset.Zero,
         end = Offset.Infinite
@@ -72,11 +75,11 @@ fun BChatM3Logo(
             .shadow(
                 elevation = if (size == LogoSize.Large) 12.dp else 4.dp,
                 shape = RoundedCornerShape(size.cornerDp),
-                ambientColor = CyanNeon.copy(alpha = 0.3f),
-                spotColor = BlueElectric.copy(alpha = 0.5f)
+                ambientColor = primaryColor.copy(alpha = 0.35f),
+                spotColor = secondaryColor.copy(alpha = 0.45f)
             )
             .clip(RoundedCornerShape(size.cornerDp))
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(containerBg)
             .border(
                 width = if (size == LogoSize.Small) 1.5.dp else 2.dp,
                 brush = gradientBrush,
@@ -97,10 +100,10 @@ fun BChatM3Logo(
             val spineBottom = h * 0.86f
             val midY = h * 0.50f
 
-            // 1. Stylized "B" - Vertical Spine (Neon Cyan)
+            // 1. Stylized "B" - Vertical Spine (Adaptive Primary to Secondary gradient)
             drawLine(
                 brush = Brush.verticalGradient(
-                    colors = listOf(CyanNeon, BlueElectric),
+                    colors = listOf(primaryColor, secondaryColor),
                     startY = spineTop,
                     endY = spineBottom
                 ),
@@ -110,7 +113,7 @@ fun BChatM3Logo(
                 cap = StrokeCap.Round
             )
 
-            // 2. Stylized "B" - Upper Lobe (Arc curving right to Cyan/Blue)
+            // 2. Stylized "B" - Upper Lobe (Arc curving right with Primary-to-Secondary brush)
             val upperLobePath = Path().apply {
                 moveTo(spineX, spineTop)
                 cubicTo(
@@ -121,11 +124,11 @@ fun BChatM3Logo(
             }
             drawPath(
                 path = upperLobePath,
-                brush = Brush.horizontalGradient(listOf(CyanNeon, BlueElectric)),
+                brush = Brush.horizontalGradient(listOf(primaryColor, secondaryColor)),
                 style = Stroke(width = strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
             )
 
-            // 3. Stylized "B" - Lower Lobe (Arc curving right to Purple Neon)
+            // 3. Stylized "B" - Lower Lobe (Arc curving right with Secondary-to-Tertiary brush)
             val lowerLobePath = Path().apply {
                 moveTo(spineX, midY)
                 cubicTo(
@@ -136,7 +139,7 @@ fun BChatM3Logo(
             }
             drawPath(
                 path = lowerLobePath,
-                brush = Brush.horizontalGradient(listOf(BlueElectric, PurpleNeon)),
+                brush = Brush.horizontalGradient(listOf(secondaryColor, tertiaryColor)),
                 style = Stroke(width = strokeWidth, cap = StrokeCap.Round, join = StrokeJoin.Round)
             )
 
@@ -149,7 +152,7 @@ fun BChatM3Logo(
             }
             drawPath(
                 path = beamPath,
-                color = Color.White.copy(alpha = 0.95f),
+                color = onSurfaceColor.copy(alpha = 0.95f),
                 style = Stroke(
                     width = (w * 0.07f).coerceAtLeast(1.8f),
                     cap = StrokeCap.Round,
@@ -161,38 +164,38 @@ fun BChatM3Logo(
             val nodeRadius = (w * 0.08f).coerceAtLeast(2.5f)
             // Node A: On the spine junction
             drawCircle(
-                color = Color.White,
+                color = onSurfaceColor,
                 radius = nodeRadius * 0.9f,
                 center = Offset(spineX, midY)
             )
 
             // Node B: Upper lobe satellite
             drawCircle(
-                color = CyanNeon,
+                color = primaryColor,
                 radius = nodeRadius,
                 center = Offset(w * 0.64f, h * 0.32f)
             )
             drawCircle(
-                color = Color.White,
+                color = containerBg,
                 radius = nodeRadius * 0.5f,
                 center = Offset(w * 0.64f, h * 0.32f)
             )
 
             // Node C: Lower lobe satellite
             drawCircle(
-                color = PurpleNeon,
+                color = tertiaryColor,
                 radius = nodeRadius,
                 center = Offset(w * 0.70f, h * 0.68f)
             )
             drawCircle(
-                color = Color.White,
+                color = containerBg,
                 radius = nodeRadius * 0.5f,
                 center = Offset(w * 0.70f, h * 0.68f)
             )
 
             // 6. Wireless Broadcast Wave (Top-right corner)
             drawArc(
-                color = CyanNeon.copy(alpha = 0.8f * pulseGlow),
+                color = primaryColor.copy(alpha = 0.85f * pulseGlow),
                 startAngle = 270f,
                 sweepAngle = 75f,
                 useCenter = false,
