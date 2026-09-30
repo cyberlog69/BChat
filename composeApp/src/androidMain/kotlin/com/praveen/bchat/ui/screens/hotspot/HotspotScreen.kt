@@ -19,6 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.praveen.bchat.ui.components.BChatM3Logo
+import com.praveen.bchat.ui.components.LogoSize
 import com.praveen.bchat.ui.theme.*
 import com.praveen.bchat.util.QrCodeHelper
 
@@ -46,14 +48,18 @@ fun HotspotScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Hotspot & Wi-Fi LAN", style = Typography.headlineMedium, color = TextPrimary)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        BChatM3Logo(size = LogoSize.Small)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Hotspot & Wi-Fi", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    }
                 },
                 actions = {
                     IconButton(onClick = { viewModel.refreshNetwork() }) {
                         Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = CyanNeon)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
         containerColor = DarkBackground

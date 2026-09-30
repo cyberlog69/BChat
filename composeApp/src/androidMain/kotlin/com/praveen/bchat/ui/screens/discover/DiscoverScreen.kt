@@ -54,13 +54,17 @@ fun DiscoverScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text("Discover Nearby", style = Typography.headlineMedium, color = TextPrimary)
-                        Text(
-                            if (isScanning) "Searching for peers..." else "Scan stopped",
-                            style = Typography.labelSmall,
-                            color = if (isScanning) CyanNeon else TextSecondary
-                        )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        BChatM3Logo(size = LogoSize.Small)
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("Discover Nearby", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                            Text(
+                                if (isScanning) "Searching for peers..." else "Scan stopped",
+                                style = Typography.labelSmall,
+                                color = if (isScanning) CyanNeon else TextSecondary
+                            )
+                        }
                     }
                 },
                 actions = {

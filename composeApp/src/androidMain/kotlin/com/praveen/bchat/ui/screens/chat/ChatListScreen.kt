@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.praveen.bchat.data.local.entities.ConversationEntity
 import com.praveen.bchat.domain.model.PeerDevice
+import com.praveen.bchat.ui.components.BChatM3Logo
+import com.praveen.bchat.ui.components.LogoSize
 import com.praveen.bchat.ui.components.TransportBadge
 import com.praveen.bchat.ui.theme.*
 import java.text.SimpleDateFormat
@@ -42,9 +44,13 @@ fun ChatListScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Messages", style = Typography.headlineMedium, color = TextPrimary)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        BChatM3Logo(size = LogoSize.Small)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Messages", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
         containerColor = DarkBackground

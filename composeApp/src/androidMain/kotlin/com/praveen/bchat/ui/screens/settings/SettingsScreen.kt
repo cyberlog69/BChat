@@ -1,5 +1,6 @@
 package com.praveen.bchat.ui.screens.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,16 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.praveen.bchat.domain.model.TransportType
-import com.praveen.bchat.ui.theme.AccentGreen
-import com.praveen.bchat.ui.theme.AccentOrange
-import com.praveen.bchat.ui.theme.CyanNeon
-import com.praveen.bchat.ui.theme.DarkBackground
-import com.praveen.bchat.ui.theme.DarkSurface
-import com.praveen.bchat.ui.theme.DarkSurfaceElevated
-import com.praveen.bchat.ui.theme.TextPrimary
-import com.praveen.bchat.ui.theme.TextSecondary
-import com.praveen.bchat.ui.theme.Typography
+import com.praveen.bchat.ui.components.BChatM3Logo
+import com.praveen.bchat.ui.components.InAppUpdateDialog
+import com.praveen.bchat.ui.components.LogoSize
+import com.praveen.bchat.ui.theme.*
+import com.praveen.bchat.util.InAppUpdater
 import com.praveen.bchat.util.PermissionUtils
+import com.praveen.bchat.util.UpdateState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +41,10 @@ fun SettingsScreen(
     val preferredTransport by viewModel.preferredTransport.collectAsState()
     val autoAcceptFiles by viewModel.autoAcceptFiles.collectAsState()
 
+    val inAppUpdater = remember { InAppUpdater.getInstance(context) }
+    val updateState by inAppUpdater.updateState.collectAsState()
+    val currentVersion = remember { inAppUpdater.getCurrentVersionName() }
+
     var showEditNameDialog by remember { mutableStateOf(false) }
     var tempName by remember { mutableStateOf(deviceName) }
 
@@ -50,16 +52,28 @@ fun SettingsScreen(
         PermissionUtils.hasPermissions(context, PermissionUtils.getRequiredPermissions())
     }
 
+    LaunchedEffect(updateState) {
+        if (updateState is UpdateState.UpToDate) {
+            Toast.makeText(context, "BChat is up to date (v$currentVersion)", Toast.LENGTH_SHORT).show()
+        } else if (updateState is UpdateState.Error) {
+            Toast.makeText(context, (updateState as UpdateState.Error).message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Settings", style = Typography.headlineMedium, color = TextPrimary)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        BChatM3Logo(size = LogoSize.Small)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text("Settings", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
+                    }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
             )
         },
-        containerColor = DarkBackground
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -70,8 +84,8 @@ fun SettingsScreen(
         ) {
             // Profile Card
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
-                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
@@ -103,13 +117,13 @@ fun SettingsScreen(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = deviceName,
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.Bold,
                             fontSize = 17.sp
                         )
                         Text(
                             text = "Tap to edit device display name",
-                            color = TextSecondary,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 12.sp
                         )
                     }
@@ -124,13 +138,13 @@ fun SettingsScreen(
             Text(
                 text = "Security & Encryption (E2EE)",
                 style = Typography.titleMedium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
-                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -140,26 +154,26 @@ fun SettingsScreen(
                         Column {
                             Text(
                                 text = "Zero-Knowledge Offline E2EE",
-                                color = TextPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 15.sp
                             )
                             Text(
                                 text = "ECDH (secp256r1) + AES-256-GCM authenticated encryption",
-                                color = TextSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 12.sp
                             )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    HorizontalDivider(color = DarkSurfaceElevated)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Column {
                         Text(
                             text = "Device Public Key Fingerprint",
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 13.sp
                         )
@@ -181,13 +195,13 @@ fun SettingsScreen(
             Text(
                 text = "P2P Transport Preferences",
                 style = Typography.titleMedium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
-                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -203,13 +217,13 @@ fun SettingsScreen(
                             Column {
                                 Text(
                                     text = transport.displayName,
-                                    color = TextPrimary,
+                                    color = MaterialTheme.colorScheme.onSurface,
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 15.sp
                                 )
                                 Text(
                                     text = transport.speedRating,
-                                    color = TextSecondary,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     fontSize = 12.sp
                                 )
                             }
@@ -221,7 +235,7 @@ fun SettingsScreen(
                             )
                         }
                         if (transport != TransportType.values().last()) {
-                            HorizontalDivider(color = DarkSurfaceElevated)
+                            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                         }
                     }
                 }
@@ -233,13 +247,13 @@ fun SettingsScreen(
             Text(
                 text = "File Sharing",
                 style = Typography.titleMedium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
-                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -251,13 +265,13 @@ fun SettingsScreen(
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = "Auto-Accept Incoming Files",
-                                color = TextPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 15.sp
                             )
                             Text(
                                 text = "Automatically receive files without manual confirmation prompt",
-                                color = TextSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 12.sp
                             )
                         }
@@ -272,13 +286,13 @@ fun SettingsScreen(
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    HorizontalDivider(color = DarkSurfaceElevated)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Column {
                         Text(
                             text = "Download Storage Folder",
-                            color = TextPrimary,
+                            color = MaterialTheme.colorScheme.onSurface,
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 15.sp
                         )
@@ -297,13 +311,13 @@ fun SettingsScreen(
             Text(
                 text = "Hardware Permissions Status",
                 style = Typography.titleMedium,
-                color = TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Card(
-                colors = CardDefaults.cardColors(containerColor = DarkSurface),
-                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -321,15 +335,97 @@ fun SettingsScreen(
                         Column {
                             Text(
                                 text = if (hasAllPermissions) "All Permissions Granted" else "Permissions Need Attention",
-                                color = TextPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 14.sp
                             )
                             Text(
                                 text = "Bluetooth, Nearby Wi-Fi, Camera & Storage",
-                                color = TextSecondary,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize = 12.sp
                             )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // ==========================================
+            // Material 3 Brand & In-App Updater Section
+            // ==========================================
+            Text(
+                text = "About BChat & Updates",
+                style = Typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Card(
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                shape = RoundedCornerShape(24.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    BChatM3Logo(size = LogoSize.Large, animated = true)
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Text(
+                        text = "BChat",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+
+                    Text(
+                        text = "Offline P2P Encrypted Mesh & Multi-Path Sharing",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+                    ) {
+                        Text(
+                            text = "Version $currentVersion",
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(18.dp))
+
+                    Button(
+                        onClick = { inAppUpdater.checkForUpdate(manualTrigger = true) },
+                        enabled = updateState !is UpdateState.Checking && updateState !is UpdateState.Downloading,
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        if (updateState is UpdateState.Checking) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Checking for Updates...")
+                        } else {
+                            Icon(Icons.Default.Sync, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Check for Updates", fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -339,10 +435,19 @@ fun SettingsScreen(
         }
     }
 
+    // In-App Update Dialog
+    InAppUpdateDialog(
+        updateState = updateState,
+        currentVersion = currentVersion,
+        onDownloadClick = { inAppUpdater.startDownload(it) },
+        onInstallClick = { inAppUpdater.installApk(it) },
+        onDismiss = { inAppUpdater.dismissUpdate() }
+    )
+
     if (showEditNameDialog) {
         AlertDialog(
             onDismissRequest = { showEditNameDialog = false },
-            title = { Text("Edit Device Name", color = TextPrimary) },
+            title = { Text("Edit Device Name", color = MaterialTheme.colorScheme.onSurface) },
             text = {
                 OutlinedTextField(
                     value = tempName,
@@ -350,9 +455,9 @@ fun SettingsScreen(
                     label = { Text("Device Name") },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = CyanNeon,
-                        unfocusedBorderColor = DarkSurfaceElevated,
-                        focusedTextColor = TextPrimary,
-                        unfocusedTextColor = TextPrimary
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
             },
@@ -371,10 +476,10 @@ fun SettingsScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showEditNameDialog = false }) {
-                    Text("Cancel", color = TextSecondary)
+                    Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             },
-            containerColor = DarkSurface
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
         )
     }
 }
